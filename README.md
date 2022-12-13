@@ -4,14 +4,12 @@
 
 ```
 import { IOST } from '@iost/client';
-
 ```
 
 or
 
 ```
 const { IOST } = require('@iost/client');
-
 ```
 
 ## wallet data parse
@@ -32,7 +30,6 @@ const wallet = new Wallet(
     async () => true,
   ),
 );
-
 ```
 
 ### encrypt wallet data and decrypt wallet data
@@ -75,7 +72,6 @@ const wallet = Wallet.parse(
     },
   ),
 );
-
 ```
 
 #### encrypt
@@ -99,7 +95,6 @@ const iost = new IOST({ host: MAINNET_US, chainId: 1024 }, wallet);
 
 ```
 const tx = iost.createTransaction({ gasLimit: 100000 });
-
 ```
 
 ### Step.2 add contract actions
@@ -149,7 +144,6 @@ iost.send(tx, { times: 300, irreversible: true })
     console.log('[failed]');
     console.log(res);
   });
-
 ```
 
 ### Step.5-2 send tx (async function)
@@ -168,5 +162,4 @@ console.log(res);
 ```
 const res = await iost.exec(tx);
 console.log(res);
-
 ```
