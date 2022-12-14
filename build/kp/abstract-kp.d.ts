@@ -1,17 +1,17 @@
 /// <reference types="node" />
 import { Signature } from '../crypto';
-export declare enum AlgorithmType {
+export declare enum KeyPairAlgorithm {
     SECP256K1 = 1,
     ED25519 = 2
 }
 export type KeyPairJSON = {
-    type: AlgorithmType;
+    type: KeyPairAlgorithm;
     pubkey: string;
     seckey: string | null;
 };
 export declare abstract class AbstractKeyPair {
     #private;
-    get type(): AlgorithmType;
+    get type(): KeyPairAlgorithm;
     get name(): string;
     get pubkey(): Buffer;
     get seckey(): Buffer;

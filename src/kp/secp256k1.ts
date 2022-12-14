@@ -1,13 +1,13 @@
 import BN from 'bn.js';
 import { ec as EC } from 'elliptic';
 import { Signature } from '../crypto';
-import { AbstractKeyPair, AlgorithmType } from './abstract-kp';
+import { AbstractKeyPair, KeyPairAlgorithm } from './abstract-kp';
 
 const secp = new EC('secp256k1');
 
 export class Secp256k1 extends AbstractKeyPair {
   constructor(pubkey: Buffer, seckey: Buffer | null) {
-    super(AlgorithmType.SECP256K1, pubkey, seckey);
+    super(KeyPairAlgorithm.SECP256K1, pubkey, seckey);
   }
   sign(data: Buffer) {
     const keyPair = secp.keyFromPrivate(this.seckey);

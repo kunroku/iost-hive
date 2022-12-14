@@ -1,18 +1,18 @@
 import { Signature } from '../crypto';
 import { Bs58 } from '../utils/bs58';
 
-export enum AlgorithmType {
+export enum KeyPairAlgorithm {
   SECP256K1 = 1,
   ED25519 = 2,
 }
 export type KeyPairJSON = {
-  type: AlgorithmType;
+  type: KeyPairAlgorithm;
   pubkey: string;
   seckey: string | null;
 };
 
 export abstract class AbstractKeyPair {
-  readonly #type: AlgorithmType;
+  readonly #type: KeyPairAlgorithm;
   readonly #name: string;
   readonly #pubkey: string;
   readonly #seckey: string | null;
@@ -30,7 +30,7 @@ export abstract class AbstractKeyPair {
   }
   constructor(type: number, pubkey: Buffer, seckey: Buffer | null) {
     this.#type = type;
-    this.#name = AlgorithmType[type];
+    this.#name = KeyPairAlgorithm[type];
     this.#pubkey = Bs58.encode(pubkey);
     this.#seckey = seckey && Bs58.encode(seckey);
   }

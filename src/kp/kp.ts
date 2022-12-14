@@ -1,10 +1,10 @@
 import { Bs58 } from '../utils/bs58';
-import { AbstractKeyPair, AlgorithmType, KeyPairJSON } from './abstract-kp';
+import { AbstractKeyPair, KeyPairAlgorithm, KeyPairJSON } from './abstract-kp';
 import { Secp256k1 } from './secp256k1';
 import { Ed25519 } from './ed25519';
 
 const createKeyPair = (
-  type: AlgorithmType,
+  type: KeyPairAlgorithm,
   pubkey: Buffer | null,
   seckey: Buffer | null,
 ) => {
@@ -19,7 +19,7 @@ const createKeyPair = (
 
 export class KeyPair extends AbstractKeyPair {
   readonly #kp: AbstractKeyPair;
-  constructor(type: AlgorithmType, pubkey: Buffer, seckey: Buffer | null) {
+  constructor(type: KeyPairAlgorithm, pubkey: Buffer, seckey: Buffer | null) {
     const kp = createKeyPair(type, pubkey, seckey);
     super(kp.type, kp.pubkey, kp.seckey);
     this.#kp = kp;
@@ -30,12 +30,12 @@ export class KeyPair extends AbstractKeyPair {
   verify(data: Buffer, signature: Buffer) {
     return this.#kp.verify(data, signature);
   }
-  static fromPublicKey(type: AlgorithmType, pubkey: Buffer) {
+  static fromPublicKey(type: KeyPairAlgorithm, pubkey: Buffer) {
     switch (type) {
-      case AlgorithmType.SECP256K1: {
+      case KeyPairAlgorithm.SECP256K1: {
         return Secp256k1.fromPublicKey(pubkey);
       }
-      case AlgorithmType.ED25519: {
+      case KeyPairAlgorithm.ED25519: {
         return Ed25519.fromPublicKey(pubkey);
       }
       default: {
@@ -43,12 +43,12 @@ export class KeyPair extends AbstractKeyPair {
       }
     }
   }
-  static fromSecretKey(type: AlgorithmType, seckey: Buffer) {
+  static fromSecretKey(type: KeyPairAlgorithm, seckey: Buffer) {
     switch (type) {
-      case AlgorithmType.SECP256K1: {
+      case KeyPairAlgorithm.SECP256K1: {
         return Secp256k1.fromSecretKey(seckey);
       }
-      case AlgorithmType.ED25519: {
+      case KeyPairAlgorithm.ED25519: {
         return Ed25519.fromSecretKey(seckey);
       }
       default: {

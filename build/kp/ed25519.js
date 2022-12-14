@@ -6,7 +6,7 @@ const crypto_1 = require("../crypto");
 const abstract_kp_1 = require("./abstract-kp");
 class Ed25519 extends abstract_kp_1.AbstractKeyPair {
     constructor(pubkey, seckey) {
-        super(abstract_kp_1.AlgorithmType.ED25519, pubkey, seckey);
+        super(abstract_kp_1.KeyPairAlgorithm.ED25519, pubkey, seckey);
     }
     sign(data) {
         const buffer = Buffer.from(tweetnacl_1.sign.detached(data, this.seckey));

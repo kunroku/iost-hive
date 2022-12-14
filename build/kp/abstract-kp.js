@@ -12,13 +12,13 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
 };
 var _AbstractKeyPair_type, _AbstractKeyPair_name, _AbstractKeyPair_pubkey, _AbstractKeyPair_seckey;
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AbstractKeyPair = exports.AlgorithmType = void 0;
+exports.AbstractKeyPair = exports.KeyPairAlgorithm = void 0;
 const bs58_1 = require("../utils/bs58");
-var AlgorithmType;
-(function (AlgorithmType) {
-    AlgorithmType[AlgorithmType["SECP256K1"] = 1] = "SECP256K1";
-    AlgorithmType[AlgorithmType["ED25519"] = 2] = "ED25519";
-})(AlgorithmType = exports.AlgorithmType || (exports.AlgorithmType = {}));
+var KeyPairAlgorithm;
+(function (KeyPairAlgorithm) {
+    KeyPairAlgorithm[KeyPairAlgorithm["SECP256K1"] = 1] = "SECP256K1";
+    KeyPairAlgorithm[KeyPairAlgorithm["ED25519"] = 2] = "ED25519";
+})(KeyPairAlgorithm = exports.KeyPairAlgorithm || (exports.KeyPairAlgorithm = {}));
 class AbstractKeyPair {
     get type() {
         return __classPrivateFieldGet(this, _AbstractKeyPair_type, "f");
@@ -38,7 +38,7 @@ class AbstractKeyPair {
         _AbstractKeyPair_pubkey.set(this, void 0);
         _AbstractKeyPair_seckey.set(this, void 0);
         __classPrivateFieldSet(this, _AbstractKeyPair_type, type, "f");
-        __classPrivateFieldSet(this, _AbstractKeyPair_name, AlgorithmType[type], "f");
+        __classPrivateFieldSet(this, _AbstractKeyPair_name, KeyPairAlgorithm[type], "f");
         __classPrivateFieldSet(this, _AbstractKeyPair_pubkey, bs58_1.Bs58.encode(pubkey), "f");
         __classPrivateFieldSet(this, _AbstractKeyPair_seckey, seckey && bs58_1.Bs58.encode(seckey), "f");
     }

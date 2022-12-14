@@ -1,10 +1,10 @@
 import { sign } from 'tweetnacl';
 import { Signature } from '../crypto';
-import { AbstractKeyPair, AlgorithmType } from './abstract-kp';
+import { AbstractKeyPair, KeyPairAlgorithm } from './abstract-kp';
 
 export class Ed25519 extends AbstractKeyPair {
   constructor(pubkey: Buffer, seckey: Buffer | null) {
-    super(AlgorithmType.ED25519, pubkey, seckey);
+    super(KeyPairAlgorithm.ED25519, pubkey, seckey);
   }
   sign(data: Buffer) {
     const buffer = Buffer.from(sign.detached(data, this.seckey));

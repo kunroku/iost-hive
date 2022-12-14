@@ -43,10 +43,10 @@ class KeyPair extends abstract_kp_1.AbstractKeyPair {
     }
     static fromPublicKey(type, pubkey) {
         switch (type) {
-            case abstract_kp_1.AlgorithmType.SECP256K1: {
+            case abstract_kp_1.KeyPairAlgorithm.SECP256K1: {
                 return secp256k1_1.Secp256k1.fromPublicKey(pubkey);
             }
-            case abstract_kp_1.AlgorithmType.ED25519: {
+            case abstract_kp_1.KeyPairAlgorithm.ED25519: {
                 return ed25519_1.Ed25519.fromPublicKey(pubkey);
             }
             default: {
@@ -56,10 +56,10 @@ class KeyPair extends abstract_kp_1.AbstractKeyPair {
     }
     static fromSecretKey(type, seckey) {
         switch (type) {
-            case abstract_kp_1.AlgorithmType.SECP256K1: {
+            case abstract_kp_1.KeyPairAlgorithm.SECP256K1: {
                 return secp256k1_1.Secp256k1.fromSecretKey(seckey);
             }
-            case abstract_kp_1.AlgorithmType.ED25519: {
+            case abstract_kp_1.KeyPairAlgorithm.ED25519: {
                 return ed25519_1.Ed25519.fromSecretKey(seckey);
             }
             default: {

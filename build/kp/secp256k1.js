@@ -8,7 +8,7 @@ const abstract_kp_1 = require("./abstract-kp");
 const secp = new elliptic_1.ec('secp256k1');
 class Secp256k1 extends abstract_kp_1.AbstractKeyPair {
     constructor(pubkey, seckey) {
-        super(abstract_kp_1.AlgorithmType.SECP256K1, pubkey, seckey);
+        super(abstract_kp_1.KeyPairAlgorithm.SECP256K1, pubkey, seckey);
     }
     sign(data) {
         const keyPair = secp.keyFromPrivate(this.seckey);
