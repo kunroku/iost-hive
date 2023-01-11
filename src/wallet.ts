@@ -22,18 +22,50 @@ export interface WalletRequestHandlerInterface {
   requireUpdatePassword: (password: string) => Promise<boolean>;
 }
 
-export class WalletRequestHandler implements WalletRequestHandlerInterface {
+export class ConstantWalletRequestHandler
+  implements WalletRequestHandlerInterface
+{
+  #requireSign: (
+    id: string,
+    permission: KeyPairPermission,
+    data: Buffer,
+  ) => Promise<boolean>;
+  #requireAddAccount: (account: Account) => Promise<boolean>;
+  #requireUpdateAccount: (account: Account) => Promise<boolean>;
+  #requireRemoveAccount: (id: string) => Promise<boolean>;
+  #requireUpdatePassword: (password: string) => Promise<boolean>;
   constructor(
-    readonly requireSign: (
+    requireSign: (
       id: string,
       permission: KeyPairPermission,
       data: Buffer,
     ) => Promise<boolean>,
-    readonly requireAddAccount: (account: Account) => Promise<boolean>,
-    readonly requireUpdateAccount: (account: Account) => Promise<boolean>,
-    readonly requireRemoveAccount: (id: string) => Promise<boolean>,
-    readonly requireUpdatePassword: (password: string) => Promise<boolean>,
-  ) {}
+    requireAddAccount: (account: Account) => Promise<boolean>,
+    requireUpdateAccount: (account: Account) => Promise<boolean>,
+    requireRemoveAccount: (id: string) => Promise<boolean>,
+    requireUpdatePassword: (password: string) => Promise<boolean>,
+  ) {
+    this.#requireSign = requireSign;
+    this.#requireAddAccount = requireAddAccount;
+    this.#requireUpdateAccount = requireUpdateAccount;
+    this.#requireRemoveAccount = requireRemoveAccount;
+    this.#requireUpdatePassword = requireUpdatePassword;
+  }
+  get requireSign() {
+    return this.#requireSign;
+  }
+  get requireAddAccount() {
+    return this.#requireAddAccount;
+  }
+  get requireUpdateAccount() {
+    return this.#requireUpdateAccount;
+  }
+  get requireRemoveAccount() {
+    return this.#requireRemoveAccount;
+  }
+  get requireUpdatePassword() {
+    return this.#requireUpdatePassword;
+  }
 }
 
 export class Wallet {

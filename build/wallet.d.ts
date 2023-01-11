@@ -8,13 +8,14 @@ export interface WalletRequestHandlerInterface {
     requireRemoveAccount: (id: string) => Promise<boolean>;
     requireUpdatePassword: (password: string) => Promise<boolean>;
 }
-export declare class WalletRequestHandler implements WalletRequestHandlerInterface {
-    readonly requireSign: (id: string, permission: KeyPairPermission, data: Buffer) => Promise<boolean>;
-    readonly requireAddAccount: (account: Account) => Promise<boolean>;
-    readonly requireUpdateAccount: (account: Account) => Promise<boolean>;
-    readonly requireRemoveAccount: (id: string) => Promise<boolean>;
-    readonly requireUpdatePassword: (password: string) => Promise<boolean>;
+export declare class ConstantWalletRequestHandler implements WalletRequestHandlerInterface {
+    #private;
     constructor(requireSign: (id: string, permission: KeyPairPermission, data: Buffer) => Promise<boolean>, requireAddAccount: (account: Account) => Promise<boolean>, requireUpdateAccount: (account: Account) => Promise<boolean>, requireRemoveAccount: (id: string) => Promise<boolean>, requireUpdatePassword: (password: string) => Promise<boolean>);
+    get requireSign(): (id: string, permission: KeyPairPermission, data: Buffer) => Promise<boolean>;
+    get requireAddAccount(): (account: Account) => Promise<boolean>;
+    get requireUpdateAccount(): (account: Account) => Promise<boolean>;
+    get requireRemoveAccount(): (id: string) => Promise<boolean>;
+    get requireUpdatePassword(): (password: string) => Promise<boolean>;
 }
 export declare class Wallet {
     #private;

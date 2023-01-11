@@ -1,18 +1,18 @@
 "use strict";
-var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
-    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
-};
 var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
-var _Wallet_instances, _Wallet_accounts, _Wallet_password, _Wallet_walletRequestHandler, _Wallet_sign, _Wallet_addAccount, _Wallet_updateAccount, _Wallet_removeAccount, _Wallet_updatePassword;
+var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+};
+var _ConstantWalletRequestHandler_requireSign, _ConstantWalletRequestHandler_requireAddAccount, _ConstantWalletRequestHandler_requireUpdateAccount, _ConstantWalletRequestHandler_requireRemoveAccount, _ConstantWalletRequestHandler_requireUpdatePassword, _Wallet_instances, _Wallet_accounts, _Wallet_password, _Wallet_walletRequestHandler, _Wallet_sign, _Wallet_addAccount, _Wallet_updateAccount, _Wallet_removeAccount, _Wallet_updatePassword;
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Wallet = exports.WalletRequestHandler = void 0;
+exports.Wallet = exports.ConstantWalletRequestHandler = void 0;
 const account_1 = require("./account");
 const tweetnacl_1 = require("tweetnacl");
 const bs58_1 = require("./utils/bs58");
@@ -22,16 +22,37 @@ const _password2key = (password) => {
     const key = (0, utils_1.sha3)(256, Buffer.from(password));
     return key;
 };
-class WalletRequestHandler {
+class ConstantWalletRequestHandler {
     constructor(requireSign, requireAddAccount, requireUpdateAccount, requireRemoveAccount, requireUpdatePassword) {
-        this.requireSign = requireSign;
-        this.requireAddAccount = requireAddAccount;
-        this.requireUpdateAccount = requireUpdateAccount;
-        this.requireRemoveAccount = requireRemoveAccount;
-        this.requireUpdatePassword = requireUpdatePassword;
+        _ConstantWalletRequestHandler_requireSign.set(this, void 0);
+        _ConstantWalletRequestHandler_requireAddAccount.set(this, void 0);
+        _ConstantWalletRequestHandler_requireUpdateAccount.set(this, void 0);
+        _ConstantWalletRequestHandler_requireRemoveAccount.set(this, void 0);
+        _ConstantWalletRequestHandler_requireUpdatePassword.set(this, void 0);
+        __classPrivateFieldSet(this, _ConstantWalletRequestHandler_requireSign, requireSign, "f");
+        __classPrivateFieldSet(this, _ConstantWalletRequestHandler_requireAddAccount, requireAddAccount, "f");
+        __classPrivateFieldSet(this, _ConstantWalletRequestHandler_requireUpdateAccount, requireUpdateAccount, "f");
+        __classPrivateFieldSet(this, _ConstantWalletRequestHandler_requireRemoveAccount, requireRemoveAccount, "f");
+        __classPrivateFieldSet(this, _ConstantWalletRequestHandler_requireUpdatePassword, requireUpdatePassword, "f");
+    }
+    get requireSign() {
+        return __classPrivateFieldGet(this, _ConstantWalletRequestHandler_requireSign, "f");
+    }
+    get requireAddAccount() {
+        return __classPrivateFieldGet(this, _ConstantWalletRequestHandler_requireAddAccount, "f");
+    }
+    get requireUpdateAccount() {
+        return __classPrivateFieldGet(this, _ConstantWalletRequestHandler_requireUpdateAccount, "f");
+    }
+    get requireRemoveAccount() {
+        return __classPrivateFieldGet(this, _ConstantWalletRequestHandler_requireRemoveAccount, "f");
+    }
+    get requireUpdatePassword() {
+        return __classPrivateFieldGet(this, _ConstantWalletRequestHandler_requireUpdatePassword, "f");
     }
 }
-exports.WalletRequestHandler = WalletRequestHandler;
+exports.ConstantWalletRequestHandler = ConstantWalletRequestHandler;
+_ConstantWalletRequestHandler_requireSign = new WeakMap(), _ConstantWalletRequestHandler_requireAddAccount = new WeakMap(), _ConstantWalletRequestHandler_requireUpdateAccount = new WeakMap(), _ConstantWalletRequestHandler_requireRemoveAccount = new WeakMap(), _ConstantWalletRequestHandler_requireUpdatePassword = new WeakMap();
 class Wallet {
     get accounts() {
         return __classPrivateFieldGet(this, _Wallet_accounts, "f").map((acc) => acc.id);
