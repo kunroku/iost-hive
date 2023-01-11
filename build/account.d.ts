@@ -1,5 +1,5 @@
 /// <reference types="node" />
-import { KeyPair, KeyPairJSON } from './kp';
+import { AbstractKeyPair, KeyPairJSON } from './kp';
 import { KeyPairPermission } from './data/params';
 export type AccountJSON = {
     id: string;
@@ -12,7 +12,7 @@ export declare class Account {
     #private;
     get id(): string;
     constructor(id: string);
-    addKeyPair(permission: KeyPairPermission, keyPair: KeyPair): this;
+    addKeyPair(permission: KeyPairPermission, keyPair: AbstractKeyPair): this;
     sign(permission: KeyPairPermission, data: Buffer): import("./crypto").Signature[];
     verify(permission: KeyPairPermission, data: Buffer, signature: Buffer): boolean;
     toJSON(): AccountJSON;

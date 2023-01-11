@@ -1,4 +1,4 @@
-import { KeyPair, KeyPairJSON } from './kp';
+import { AbstractKeyPair, KeyPair, KeyPairJSON } from './kp';
 import { KeyPairPermission } from './data/params';
 import { Bs58 } from './utils/bs58';
 
@@ -12,8 +12,8 @@ export type AccountJSON = {
 
 export class Account {
   readonly #auth: {
-    active: KeyPair[];
-    owner: KeyPair[];
+    active: AbstractKeyPair[];
+    owner: AbstractKeyPair[];
   };
   readonly #id: string;
   get id() {
@@ -26,7 +26,7 @@ export class Account {
     };
     this.#id = id;
   }
-  addKeyPair(permission: KeyPairPermission, keyPair: KeyPair) {
+  addKeyPair(permission: KeyPairPermission, keyPair: AbstractKeyPair) {
     this.#auth[permission].push(keyPair);
     return this;
   }
