@@ -1,4 +1,4 @@
-import { SHA3 } from 'sha3';
+import { sha3 } from '../utils/sha3';
 import { Codec } from '../crypto/codec';
 import { Signature } from '../crypto/signature';
 import {
@@ -78,14 +78,10 @@ export class Transaction {
     this.#delay = delay;
   }
   getBaseHash() {
-    const hash = new SHA3(256);
-    hash.update(this.bytes(0));
-    return hash.digest('binary');
+    return sha3(256, this.bytes(0));
   }
   getPublishHash() {
-    const hash = new SHA3(256);
-    hash.update(this.bytes(1));
-    return hash.digest('binary');
+    return sha3(256, this.bytes(1));
   }
   addSigner(id: string, permission: KeyPairPermission) {
     if (!this.#signers.includes(`${id}@${permission}`)) {

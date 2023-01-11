@@ -1,1 +1,0 @@
-{"version":3,"file":"official-contract.js","sourceRoot":"","sources":["../../../src/contracts/official-contract.ts"],"names":[],"mappings":";;;AAGA,MAAsB,gBAAgB;IAEpC,YAA6B,GAAgB;QAAhB,QAAG,GAAH,GAAG,CAAa;IAAG,CAAC;IACvC,IAAI,CAAC,GAAW,EAAE,IAA+B;QACzD,IAAI,CAAC,GAAG,CAAC,SAAS,CAAC,IAAI,CAAC,EAAE,EAAE,GAAG,EAAE,IAAI,CAAC,CAAC;IACzC,CAAC;CACF;AAND,4CAMC"}

@@ -13,7 +13,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var _Transaction_amount_limit, _Transaction_chainId, _Transaction_gasLimit, _Transaction_gasRatio, _Transaction_actions, _Transaction_publisher, _Transaction_publisher_sigs, _Transaction_signers, _Transaction_signatures, _Transaction_reserved, _Transaction_time, _Transaction_expiration, _Transaction_delay;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Transaction = void 0;
-const sha3_1 = require("sha3");
+const sha3_1 = require("../utils/sha3");
 const codec_1 = require("../crypto/codec");
 const defaultTransactionConfig = {
     chainId: 1024,
@@ -72,14 +72,10 @@ class Transaction {
         __classPrivateFieldSet(this, _Transaction_delay, delay, "f");
     }
     getBaseHash() {
-        const hash = new sha3_1.SHA3(256);
-        hash.update(this.bytes(0));
-        return hash.digest('binary');
+        return (0, sha3_1.sha3)(256, this.bytes(0));
     }
     getPublishHash() {
-        const hash = new sha3_1.SHA3(256);
-        hash.update(this.bytes(1));
-        return hash.digest('binary');
+        return (0, sha3_1.sha3)(256, this.bytes(1));
     }
     addSigner(id, permission) {
         if (!__classPrivateFieldGet(this, _Transaction_signers, "f").includes(`${id}@${permission}`)) {
