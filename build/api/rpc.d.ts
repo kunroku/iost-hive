@@ -110,7 +110,7 @@ export declare class RPC {
     getContractStorageFields(id: string, key: string, byLongestChain?: boolean): Promise<ContractStorageFields>;
     getBatchContractStorage(id: string, keyFields: {
         key: string;
-        fielod: string;
+        field: string;
     }[], byLongestChain?: boolean): Promise<ContractStorages[]>;
     sendTx(tx: Transaction): Promise<TransactionPending>;
     execTx(tx: Transaction): Promise<TxReceiptInfo>;

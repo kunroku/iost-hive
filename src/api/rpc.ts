@@ -242,12 +242,12 @@ export class RPC {
   }
   async getBatchContractStorage(
     id: string,
-    keyFields: { key: string; fielod: string }[],
+    keyFields: { key: string; field: string }[],
     byLongestChain = true,
   ) {
     const chunkedQuery: {
       id: string;
-      key_fields: { key: string; fielod: string }[];
+      key_fields: { key: string; field: string }[];
       by_longest_chain: boolean;
     }[] = [];
     for (let i = 0; i < keyFields.length; i++) {
