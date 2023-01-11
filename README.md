@@ -39,7 +39,7 @@ const wallet = new Wallet(
 ```
 import { Wallet, WalletRequestHandler, Bs58 } from '@iost/client';
 
-const data = 'BaeguqaT6Gou2phnvGrXPftGBsBSTD3Pm:L8N8ec8zvvuCvY3HN6YpJsZQUnn2rVE51JGuUunHUHMBp36jUGsS27FffU7byLYKo7VRMZnUTKwtRK7TriBDKDkQjTQ8WhsGkBEtU4xxY1EAdddAVoodvY9t3TBLvFyPdJ4XHNMrdZythcawVRPmkq2QYHG5theex3XwLqjwD65T1qbHBwYyQuAdFq4FsCa9vJ2FDY1ZQgditrLzPsgULGWVbg2FKPRNAv42kFGY7y9fXsQvQUZLSkoewioZF7oktaRxg7ZJhzxMGrt5mRjXUjpmBRSdcHzGzF9bHJQBY5yBSRqrsnQUwFM7xNib4tTtHqXwqsDWpr1Q1ihPcdQAkmAmWyo7';
+const data = 'MJR4mzVHbrZaBzRprgYAMwQrgqSqehUaR:rezbhbSYD2wGPZytnxP292b31R2RviXVh5ZX6LP7oLmeLenHr2VkbjhDTuhtKDecUHKjUp6y3HXxLZHJc1YJr7yP9jp7iXVc3s8GrFYEjTd1419AdYQsw32iXvspr9CWjddFZSv4ZRLKEJoZJ7iFG8NDabD4F7dqi4SiAHmo5wHxqUZ1oECrKTZLcc1frRxjFcHGX7XVeDNXbs5FycvmsbhrLh66WJVnogxL2pJchrfWnBX1ss4ew2pHvGaXRSTAjhdBAzLhUcWPnCemumiZanyVvdyJtp8QbJxQ8fbmAh1rtN2HDHEVoT6tSeoLmisocVhyrKdetKgfLVTKFywHyGCyqHKJuXfi8H913bw8yvVM7JCzx5qcGGsAbQwDsY8aedojP6DCT1FJGrQeyT6ptY5MEtfYPFtsojPcb4Q31X6EmMBAqJ3C1Rb5YVHZkgf1vqp6fEqFzK2bCjRXgw1iko65TEmP2u6FNXbiCxyqjBY1r4vfdPmy6adtr4stkNoe6GHoAi4o7XSR1HpiSqUiviJdauYgkBKtTcuPv1Nws8YBsiUyDK9ZxKUQ4kXHrP7JsGupTWzykne';
 const password = 'password';
 const wallet = Wallet.parse(
   data,
@@ -86,7 +86,7 @@ console.log(wallet.toString());
 import { Wallet, IOST, MAINNET_US } from '@iost/client';
 
 const wallet = Wallet.parse(/** arguments **/);
-const iost = new IOST({ host: MAINNET_US, chainId: 1024 }, wallet);
+const iost = new IOST({ host: MAINNET_US, chainId: 1024 });
 ```
 
 ## send transaction
@@ -119,7 +119,7 @@ tx.setTime(1000, 0, iost.serverTimeDiff);
 
 ```
 const account = iost.wallet.accounts[0];
-// iost.sign(/** tx instance **/, /** publisher **/, /** other signers **/);
+// iost.sign(/** wallet instance **/, /** tx instance **/, /** publisher **/, /** other signers **/);
 await iost.sign(tx, account, []);
 ```
 

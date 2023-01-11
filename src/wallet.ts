@@ -1,10 +1,12 @@
 import { Account } from './account';
-import { secretbox, hash, randomBytes } from 'tweetnacl';
+import { secretbox, randomBytes } from 'tweetnacl';
 import { Bs58 } from './utils/bs58';
 import { KeyPairPermission } from './data/params';
+import { sha3 } from './utils';
+import { LIBRARY_NAME } from './constants/name';
 
 const _password2key = (password: string) => {
-  const key = hash(Buffer.from(password)).subarray(0, secretbox.keyLength);
+  const key = sha3(256, Buffer.from(password));
   return key;
 };
 
@@ -143,7 +145,7 @@ export class Wallet {
     return `${nonceBs58}:${boxBs58}`;
   }
   static connect() {
-    return window['iwallet'] ? (window['iwallet'] as Wallet) : null;
+    return window[LIBRARY_NAME] ? (window[LIBRARY_NAME] as Wallet) : null;
   }
   static parse(
     data: string,

@@ -19,20 +19,15 @@ const defaultConfig: IOSTConfig = {
 
 export class IOST {
   readonly #config: IOSTConfig;
-  readonly #wallet: Wallet;
   #serverTimeDiff = 0;
   get config(): IOSTConfig {
     return { ...this.#config };
   }
-  get wallet() {
-    return this.#wallet;
-  }
   get serverTimeDiff() {
     return this.#serverTimeDiff;
   }
-  constructor(config: Partial<IOSTConfig> = {}, wallet: Wallet) {
+  constructor(config: Partial<IOSTConfig> = {}) {
     this.#config = { ...defaultConfig, ...config };
-    this.#wallet = wallet;
   }
   get rpc() {
     return new RPC(this.#config.host);
@@ -47,6 +42,7 @@ export class IOST {
     return this.serverTimeDiff;
   }
   async sign(
+    wallet: Wallet,
     tx: Transaction,
     publisher: string,
     signers: { id: string; permission: KeyPairPermission }[],
@@ -55,7 +51,7 @@ export class IOST {
       tx.addSigner(signer.id, signer.permission);
     }
     for (const signer of signers) {
-      const signatures = await this.#wallet.sign(
+      const signatures = await wallet.sign(
         signer.id,
         signer.permission,
         tx.getBaseHash(),
@@ -63,7 +59,7 @@ export class IOST {
       tx.addSign(signatures);
     }
     if (publisher) {
-      const signatures = await this.#wallet.sign(
+      const signatures = await wallet.sign(
         publisher,
         'active',
         tx.getPublishHash(),

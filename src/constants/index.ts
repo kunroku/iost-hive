@@ -1,2 +1,3 @@
-export * from './version';
 export * from './host';
+export * from './name';
+export * from './version';

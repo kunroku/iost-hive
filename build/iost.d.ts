@@ -11,12 +11,11 @@ export type IOSTConfig = {
 export declare class IOST {
     #private;
     get config(): IOSTConfig;
-    get wallet(): Wallet;
     get serverTimeDiff(): number;
-    constructor(config: Partial<IOSTConfig>, wallet: Wallet);
+    constructor(config?: Partial<IOSTConfig>);
     get rpc(): RPC;
     setServerTimeDiff(): Promise<number>;
-    sign(tx: Transaction, publisher: string, signers: {
+    sign(wallet: Wallet, tx: Transaction, publisher: string, signers: {
         id: string;
         permission: KeyPairPermission;
     }[]): Promise<void>;

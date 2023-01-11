@@ -10,7 +10,7 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
-var _IOST_config, _IOST_wallet, _IOST_serverTimeDiff;
+var _IOST_config, _IOST_serverTimeDiff;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.IOST = void 0;
 const api_1 = require("./api");
@@ -24,18 +24,13 @@ class IOST {
     get config() {
         return Object.assign({}, __classPrivateFieldGet(this, _IOST_config, "f"));
     }
-    get wallet() {
-        return __classPrivateFieldGet(this, _IOST_wallet, "f");
-    }
     get serverTimeDiff() {
         return __classPrivateFieldGet(this, _IOST_serverTimeDiff, "f");
     }
-    constructor(config = {}, wallet) {
+    constructor(config = {}) {
         _IOST_config.set(this, void 0);
-        _IOST_wallet.set(this, void 0);
         _IOST_serverTimeDiff.set(this, 0);
         __classPrivateFieldSet(this, _IOST_config, Object.assign(Object.assign({}, defaultConfig), config), "f");
-        __classPrivateFieldSet(this, _IOST_wallet, wallet, "f");
     }
     get rpc() {
         return new api_1.RPC(__classPrivateFieldGet(this, _IOST_config, "f").host);
@@ -49,16 +44,16 @@ class IOST {
         }
         return this.serverTimeDiff;
     }
-    async sign(tx, publisher, signers) {
+    async sign(wallet, tx, publisher, signers) {
         for (const signer of signers) {
             tx.addSigner(signer.id, signer.permission);
         }
         for (const signer of signers) {
-            const signatures = await __classPrivateFieldGet(this, _IOST_wallet, "f").sign(signer.id, signer.permission, tx.getBaseHash());
+            const signatures = await wallet.sign(signer.id, signer.permission, tx.getBaseHash());
             tx.addSign(signatures);
         }
         if (publisher) {
-            const signatures = await __classPrivateFieldGet(this, _IOST_wallet, "f").sign(publisher, 'active', tx.getPublishHash());
+            const signatures = await wallet.sign(publisher, 'active', tx.getPublishHash());
             tx.setPublisher(publisher);
             tx.addPublishSign(signatures);
         }
@@ -80,5 +75,5 @@ class IOST {
     }
 }
 exports.IOST = IOST;
-_IOST_config = new WeakMap(), _IOST_wallet = new WeakMap(), _IOST_serverTimeDiff = new WeakMap();
+_IOST_config = new WeakMap(), _IOST_serverTimeDiff = new WeakMap();
 //# sourceMappingURL=iost.js.map

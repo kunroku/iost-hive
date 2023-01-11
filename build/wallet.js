@@ -16,8 +16,10 @@ exports.Wallet = exports.WalletRequestHandler = void 0;
 const account_1 = require("./account");
 const tweetnacl_1 = require("tweetnacl");
 const bs58_1 = require("./utils/bs58");
+const utils_1 = require("./utils");
+const name_1 = require("./constants/name");
 const _password2key = (password) => {
-    const key = (0, tweetnacl_1.hash)(Buffer.from(password)).subarray(0, tweetnacl_1.secretbox.keyLength);
+    const key = (0, utils_1.sha3)(256, Buffer.from(password));
     return key;
 };
 class WalletRequestHandler {
@@ -94,7 +96,7 @@ class Wallet {
         return `${nonceBs58}:${boxBs58}`;
     }
     static connect() {
-        return window['iwallet'] ? window['iwallet'] : null;
+        return window[name_1.LIBRARY_NAME] ? window[name_1.LIBRARY_NAME] : null;
     }
     static parse(data, password, auth) {
         const [nonce, encrypted] = data.split(':');
