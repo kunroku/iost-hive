@@ -19,11 +19,25 @@ const iost_1 = require("../iost");
 class Callback {
 }
 class IWalletIOSTAdapter {
+    get iost() {
+        return new iost_1.IOST({
+            host: this.rpc.provider.host,
+            chainId: this.account.network === 'LOCALNET'
+                ? 1020
+                : this.account.network === 'MAINNET'
+                    ? 1024
+                    : 1023,
+        });
+    }
     setRPC(rpc) {
         this.rpc = rpc;
     }
     setAccount(account) {
         this.account = account;
+    }
+    callABI(contract, abi, args) {
+        const tx = this.iost.createTransaction({});
+        tx.addAction(contract, abi, args);
     }
 }
 exports.IWalletIOSTAdapter = IWalletIOSTAdapter;
@@ -52,14 +66,7 @@ const createIwalletAdapterPack = () => ({
 const getIwalletJS = () => window['IWalletJS'];
 class IWallet {
     get iost() {
-        return new iost_1.IOST({
-            host: __classPrivateFieldGet(this, _IWallet_instances, "a", _IWallet_adapter_get).rpc.provider.host,
-            chainId: this.account.network === 'LOCALNET'
-                ? 1020
-                : this.account.network === 'MAINNET'
-                    ? 1024
-                    : 1023,
-        });
+        return __classPrivateFieldGet(this, _IWallet_instances, "a", _IWallet_adapter_get).iost;
     }
     get account() {
         return Object.assign({}, __classPrivateFieldGet(this, _IWallet_instances, "a", _IWallet_adapter_get).account);

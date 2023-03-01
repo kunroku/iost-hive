@@ -3,6 +3,7 @@ import { EventEmitter } from 'events';
 import StrictEventEmitter from 'strict-event-emitter-types';
 import { RPC, TransactionPending } from '../api';
 import { TxInfo } from '../data/info';
+import { TransactionArgumentType } from '../data/params';
 import { IOST } from '../iost';
 import { Transaction } from '../transaction';
 export type Network = 'MAINNET' | 'TESTNET' | 'LOCALNET';
@@ -16,8 +17,10 @@ export declare class IWalletIOSTAdapter {
     signMessage: IWalletSignMessage;
     rpc: IWalletRPCAdapter;
     account: IWalletAccount;
+    get iost(): IOST;
     setRPC(rpc: IWalletRPCAdapter): void;
     setAccount(account: IWalletAccountAdapter): void;
+    callABI(contract: string, abi: string, args: TransactionArgumentType[]): void;
 }
 declare class IWalletHTTPProviderAdapter {
     host: string;

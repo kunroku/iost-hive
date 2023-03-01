@@ -2,6 +2,7 @@ import { EventEmitter } from 'events';
 import StrictEventEmitter from 'strict-event-emitter-types';
 import { RPC, TransactionPending } from '../api';
 import { TxInfo } from '../data/info';
+import { TransactionArgumentType } from '../data/params';
 import { IOST } from '../iost';
 import { Transaction } from '../transaction';
 
@@ -19,11 +20,26 @@ export class IWalletIOSTAdapter {
   signMessage: IWalletSignMessage;
   rpc: IWalletRPCAdapter;
   account: IWalletAccount;
+  get iost() {
+    return new IOST({
+      host: this.rpc.provider.host,
+      chainId:
+        this.account.network === 'LOCALNET'
+          ? 1020
+          : this.account.network === 'MAINNET'
+          ? 1024
+          : 1023,
+    });
+  }
   setRPC(rpc: IWalletRPCAdapter) {
     this.rpc = rpc;
   }
   setAccount(account: IWalletAccountAdapter) {
     this.account = account;
+  }
+  callABI(contract: string, abi: string, args: TransactionArgumentType[]) {
+    const tx = this.iost.createTransaction({});
+    tx.addAction(contract, abi, args);
   }
 }
 class IWalletHTTPProviderAdapter {
@@ -91,15 +107,7 @@ export class IWallet {
   static #instance: IWallet;
   #extension: IWalletExtension;
   get iost() {
-    return new IOST({
-      host: this.#adapter.rpc.provider.host,
-      chainId:
-        this.account.network === 'LOCALNET'
-          ? 1020
-          : this.account.network === 'MAINNET'
-          ? 1024
-          : 1023,
-    });
+    return this.#adapter.iost;
   }
   get #adapter() {
     return this.#extension.newIOST(createIwalletAdapterPack());
