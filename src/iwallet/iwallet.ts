@@ -146,7 +146,7 @@ export class IWallet {
   signAndSend(tx: Transaction) {
     const event: StrictEventEmitter<EventEmitter, IWalletTransactionEvents> =
       new EventEmitter();
-    const handler = this.#adapter.signAndSend(tx);
+    const handler = this.#adapter.signAndSend(JSON.parse(tx.toString()));
     handler.on('pending', (res) => event.emit('pending', res));
     handler.on('success', (res) => event.emit('success', res));
     handler.on('failed', (res) => event.emit('failed', res));

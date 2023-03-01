@@ -103,7 +103,7 @@ class IWallet {
     }
     signAndSend(tx) {
         const event = new events_1.EventEmitter();
-        const handler = __classPrivateFieldGet(this, _IWallet_instances, "a", _IWallet_adapter_get).signAndSend(tx);
+        const handler = __classPrivateFieldGet(this, _IWallet_instances, "a", _IWallet_adapter_get).signAndSend(JSON.parse(tx.toString()));
         handler.on('pending', (res) => event.emit('pending', res));
         handler.on('success', (res) => event.emit('success', res));
         handler.on('failed', (res) => event.emit('failed', res));
