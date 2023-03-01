@@ -14,15 +14,5 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-__exportStar(require("./api"), exports);
-__exportStar(require("./constants"), exports);
-__exportStar(require("./contracts"), exports);
-__exportStar(require("./crypto"), exports);
-__exportStar(require("./data"), exports);
-__exportStar(require("./kp"), exports);
-__exportStar(require("./transaction"), exports);
-__exportStar(require("./utils"), exports);
-__exportStar(require("./account"), exports);
-__exportStar(require("./iost"), exports);
 __exportStar(require("./iwallet"), exports);
 //# sourceMappingURL=index.js.map

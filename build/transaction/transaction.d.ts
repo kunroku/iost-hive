@@ -8,6 +8,11 @@ export type TransactionProps = {
 };
 export declare class Transaction {
     #private;
+    get actions(): {
+        contract: string;
+        actionName: string;
+        data: string;
+    }[];
     constructor(props: TransactionProps);
     addApprove(token: string, amount?: string): void;
     getApproveList(): AmountLimit[];

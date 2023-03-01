@@ -1,14 +1,14 @@
 "use strict";
+var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+};
 var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
-};
-var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
-    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _Transaction_amount_limit, _Transaction_chainId, _Transaction_gasLimit, _Transaction_gasRatio, _Transaction_actions, _Transaction_publisher, _Transaction_publisher_sigs, _Transaction_signers, _Transaction_signatures, _Transaction_reserved, _Transaction_time, _Transaction_expiration, _Transaction_delay;
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -21,6 +21,9 @@ const defaultTransactionConfig = {
     gasRatio: 1,
 };
 class Transaction {
+    get actions() {
+        return JSON.parse(JSON.stringify(__classPrivateFieldGet(this, _Transaction_actions, "f")));
+    }
     constructor(props) {
         _Transaction_amount_limit.set(this, []);
         _Transaction_chainId.set(this, void 0);
