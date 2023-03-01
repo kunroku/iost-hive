@@ -3,7 +3,7 @@ import { EventEmitter } from 'events';
 import StrictEventEmitter from 'strict-event-emitter-types';
 import { RPC } from '../api';
 import { TxReceiptInfo } from '../data/info';
-import { IOSTConfig } from '../data/params';
+import { IOSTConfig, TransactionArgumentType } from '../data/params';
 import { Transaction } from '../transaction';
 export type Network = 'MAINNET' | 'TESTNET' | 'LOCALNET';
 declare class Callback {
@@ -11,6 +11,51 @@ declare class Callback {
 }
 export type IWalletSignAndSend = (tx: Transaction) => Callback;
 export type IWalletSignMessage = (message: string) => Callback;
+type IOSTAdapterConfig = {
+    gasPrice: number;
+    gasLimit: number;
+    delay: number;
+};
+type HTTPProviderAdapter = {
+    _host: string;
+};
+type RPCAdapter = {
+    _provider: HTTPProviderAdapter;
+};
+export declare class IWalletAdapterPack {
+    #private;
+    static get IOST(): {
+        new (config: IOSTAdapterConfig): {
+            signAndSend: IWalletSignAndSend;
+            signMessage: IWalletSignMessage;
+            rpc: RPCAdapter;
+            account: IWalletAccount;
+            readonly host: string;
+            readonly chainId: number;
+            config: IOSTAdapterConfig;
+            setRPC(rpc: RPCAdapter): void;
+            readonly currentRPC: RPCAdapter;
+            setAccount(account: IWalletAccount): void;
+            callABI(contract: string, abi: string, args: TransactionArgumentType[]): any;
+        };
+    };
+    static get HTTPProvider(): {
+        new (_host: string): {
+            _host: string;
+        };
+    };
+    static get RPC(): {
+        new (_provider: HTTPProviderAdapter): {
+            _provider: HTTPProviderAdapter;
+        };
+    };
+    static get Account(): {
+        new (name: string, network: Network): {
+            name: string;
+            network: Network;
+        };
+    };
+}
 export type IWalletAccount = {
     name: string;
     network: Network;
@@ -40,7 +85,7 @@ export type IWalletSignHandlerStatus = 'pending' | 'success' | 'failed';
 export declare class IWallet implements IOSTConfig {
     #private;
     get host(): string;
-    get chainId(): 1024 | 0 | 1020 | 1023;
+    get chainId(): number;
     get account(): IWalletAccount;
     set account(account: IWalletAccount);
     get rpc(): RPC;

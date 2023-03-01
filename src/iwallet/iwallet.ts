@@ -14,86 +14,190 @@ class Callback {
 export type IWalletSignAndSend = (tx: Transaction) => Callback;
 export type IWalletSignMessage = (message: string) => Callback;
 
-class IWalletIOSTAdapter {
+type IOSTAdapterConfig = {
+  gasPrice: number;
+  gasLimit: number;
+  delay: number;
+};
+
+type HTTPProviderAdapter = {
+  _host: string;
+};
+
+type RPCAdapter = {
+  _provider: HTTPProviderAdapter;
+};
+type IOSTAdapter = {
   signAndSend: IWalletSignAndSend;
   signMessage: IWalletSignMessage;
-  rpc: IWalletRPCAdapter;
+  rpc: RPCAdapter;
   account: IWalletAccount;
-  get host() {
-    return this.rpc._provider._host;
+  host: string;
+  chainId: number;
+  setRPC(rpc: RPCAdapter): void;
+  currentRPC: RPCAdapter;
+  setAccount(account: IWalletAccount): void;
+  callABI(contract: string, abi: string, args: TransactionArgumentType[]): any;
+};
+
+export class IWalletAdapterPack {
+  static #host: string;
+  static #chainId: number;
+  static get IOST() {
+    return class IOST implements IOSTAdapter {
+      signAndSend: IWalletSignAndSend;
+      signMessage: IWalletSignMessage;
+      rpc: RPCAdapter;
+      account: IWalletAccount;
+      get host() {
+        return IWalletAdapterPack.#host;
+      }
+      get chainId() {
+        return IWalletAdapterPack.#chainId;
+      }
+      constructor(public config: IOSTAdapterConfig) {}
+      setRPC(rpc: RPCAdapter) {
+        this.rpc = rpc;
+      }
+      get currentRPC() {
+        return this.rpc;
+      }
+      setAccount(account: IWalletAccount) {
+        this.account = account;
+      }
+      callABI(contract: string, abi: string, args: TransactionArgumentType[]) {
+        const tx = new Transaction({
+          chainId: IWalletAdapterPack.#chainId,
+          gasLimit: this.config.gasLimit,
+        });
+        tx.addAction(contract, abi, args);
+        return JSON.parse(tx.toString());
+      }
+    };
   }
-  get chainId() {
-    return this.account.network === 'LOCALNET'
-      ? 1020
-      : this.account.network === 'TESTNET'
-      ? 1023
-      : this.account.network === 'MAINNET'
-      ? 1024
-      : 0;
+  static get HTTPProvider() {
+    return class HTTPProvider implements HTTPProviderAdapter {
+      constructor(public _host: string) {
+        IWalletAdapterPack.#host = _host;
+      }
+    };
   }
-  setRPC(rpc: IWalletRPCAdapter) {
-    this.rpc = rpc;
+  static get RPC() {
+    return class RPC {
+      constructor(public _provider: HTTPProviderAdapter) {
+        IWalletAdapterPack.#host = _provider._host;
+      }
+    };
   }
-  get currentRPC() {
-    return this.rpc;
-  }
-  setAccount(account: IWalletAccountAdapter) {
-    this.account = account;
-  }
-  callABI(contract: string, abi: string, args: TransactionArgumentType[]) {
-    const tx = new Transaction({ chainId: this.chainId });
-    tx.addAction(contract, abi, args);
-    return JSON.parse(tx.toString());
+  static get Account() {
+    return class Account implements IWalletAccount {
+      name: string;
+      network: Network;
+      constructor(name: string, network: Network) {
+        if (typeof name === 'string') {
+          this.name = name;
+          if (network) {
+            this.network = network;
+          } else {
+            this.network = getIwalletJS().network;
+          }
+        } else {
+          this.name = null;
+          this.network = null;
+        }
+        IWalletAdapterPack.#chainId =
+          this.network === 'LOCALNET'
+            ? 1020
+            : this.network === 'TESTNET'
+            ? 1023
+            : this.network === 'MAINNET'
+            ? 1024
+            : 0;
+      }
+    };
   }
 }
-class IWalletHTTPProviderAdapter {
-  constructor(public _host: string) {}
-}
-class IWalletRPCAdapter {
-  constructor(public _provider: IWalletHTTPProviderAdapter) {}
-}
+
+// class IWalletIOSTAdapter {
+//   signAndSend: IWalletSignAndSend;
+//   signMessage: IWalletSignMessage;
+//   rpc: IWalletRPCAdapter;
+//   account: IWalletAccount;
+//   get host() {
+//     return this.rpc._provider._host;
+//   }
+//   get chainId() {
+//     return this.account.network === 'LOCALNET'
+//       ? 1020
+//       : this.account.network === 'TESTNET'
+//       ? 1023
+//       : this.account.network === 'MAINNET'
+//       ? 1024
+//       : 0;
+//   }
+//   setRPC(rpc: IWalletRPCAdapter) {
+//     this.rpc = rpc;
+//   }
+//   get currentRPC() {
+//     return this.rpc;
+//   }
+//   setAccount(account: IWalletAccountAdapter) {
+//     this.account = account;
+//   }
+//   callABI(contract: string, abi: string, args: TransactionArgumentType[]) {
+//     const tx = new Transaction({ chainId: this.chainId });
+//     tx.addAction(contract, abi, args);
+//     return JSON.parse(tx.toString());
+//   }
+// }
+// class IWalletHTTPProviderAdapter {
+//   constructor(public _host: string) {}
+// }
+// class IWalletRPCAdapter {
+//   constructor(public _provider: IWalletHTTPProviderAdapter) {}
+// }
 export type IWalletAccount = {
   name: string;
   network: Network;
 };
-class IWalletAccountAdapter implements IWalletAccount {
-  name: string;
-  network: Network;
-  constructor(name: string, network: Network) {
-    if (typeof name === 'string') {
-      this.name = name;
-      if (network) {
-        this.network = network;
-      } else {
-        this.network = getIwalletJS().network;
-      }
-    } else {
-      this.name = null;
-      this.network = null;
-    }
-  }
-}
-type IWalletAdapterPack = {
-  IOST: typeof IWalletIOSTAdapter;
-  HTTPProvider: typeof IWalletHTTPProviderAdapter;
-  RPC: typeof IWalletRPCAdapter;
-  Account: typeof IWalletAccountAdapter;
-};
+// class IWalletAccountAdapter implements IWalletAccount {
+//   name: string;
+//   network: Network;
+//   constructor(name: string, network: Network) {
+//     if (typeof name === 'string') {
+//       this.name = name;
+//       if (network) {
+//         this.network = network;
+//       } else {
+//         this.network = getIwalletJS().network;
+//       }
+//     } else {
+//       this.name = null;
+//       this.network = null;
+//     }
+//   }
+// }
+// type IWalletAdapterPack = {
+//   IOST: typeof IWalletIOSTAdapter;
+//   HTTPProvider: typeof IWalletHTTPProviderAdapter;
+//   RPC: typeof IWalletRPCAdapter;
+//   Account: typeof IWalletAccountAdapter;
+// };
 
-const createIwalletAdapterPack = () => ({
-  IOST: IWalletIOSTAdapter,
-  HTTPProvider: IWalletHTTPProviderAdapter,
-  RPC: IWalletRPCAdapter,
-  Account: IWalletAccountAdapter,
-});
+// const createIwalletAdapterPack = () => ({
+//   IOST: IWalletIOSTAdapter,
+//   HTTPProvider: IWalletHTTPProviderAdapter,
+//   RPC: IWalletRPCAdapter,
+//   Account: IWalletAccountAdapter,
+// });
 
 type IWalletExtension = {
-  account: IWalletAccountAdapter;
+  account: IWalletAccount;
   enable: () => Promise<string>;
-  IOST: IWalletIOSTAdapter;
+  IOST: IOSTAdapter;
   network: Network;
-  newIOST: (pack: IWalletAdapterPack) => IWalletIOSTAdapter;
-  rpc: IWalletRPCAdapter;
+  newIOST: (pack: IWalletAdapterPack) => IOSTAdapter;
+  rpc: RPCAdapter;
   setAccount: (param: IWalletAccount) => void;
 };
 
@@ -131,7 +235,7 @@ export class IWallet implements IOSTConfig {
   }
   #extension: IWalletExtension;
   get #adapter() {
-    return this.#extension.newIOST(createIwalletAdapterPack());
+    return this.#extension.newIOST(new IWalletAdapterPack());
   }
   get account() {
     return { ...this.#adapter.account };
