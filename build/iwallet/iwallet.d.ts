@@ -20,7 +20,7 @@ export declare class IWalletIOSTAdapter {
     get iost(): IOST;
     setRPC(rpc: IWalletRPCAdapter): void;
     setAccount(account: IWalletAccountAdapter): void;
-    callABI(contract: string, abi: string, args: TransactionArgumentType[]): void;
+    callABI(contract: string, abi: string, args: TransactionArgumentType[]): Transaction;
 }
 declare class IWalletHTTPProviderAdapter {
     host: string;

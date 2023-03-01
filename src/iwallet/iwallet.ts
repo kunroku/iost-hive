@@ -40,6 +40,7 @@ export class IWalletIOSTAdapter {
   callABI(contract: string, abi: string, args: TransactionArgumentType[]) {
     const tx = this.iost.createTransaction({});
     tx.addAction(contract, abi, args);
+    return tx;
   }
 }
 class IWalletHTTPProviderAdapter {

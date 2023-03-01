@@ -38,6 +38,7 @@ class IWalletIOSTAdapter {
     callABI(contract, abi, args) {
         const tx = this.iost.createTransaction({});
         tx.addAction(contract, abi, args);
+        return tx;
     }
 }
 exports.IWalletIOSTAdapter = IWalletIOSTAdapter;
