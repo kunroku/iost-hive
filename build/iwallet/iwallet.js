@@ -24,9 +24,11 @@ class IWalletIOSTAdapter {
             host: this.rpc._provider._host,
             chainId: this.account.network === 'LOCALNET'
                 ? 1020
-                : this.account.network === 'MAINNET'
-                    ? 1024
-                    : 1023,
+                : this.account.network === 'TESTNET'
+                    ? 1023
+                    : this.account.network === 'MAINNET'
+                        ? 1024
+                        : 0,
         });
     }
     setRPC(rpc) {
@@ -56,8 +58,19 @@ class IWalletRPCAdapter {
 }
 class IWalletAccountAdapter {
     constructor(name, network) {
-        this.name = name;
-        this.network = network;
+        if (typeof name === 'string') {
+            this.name = name;
+            if (network) {
+                this.network = network;
+            }
+            else {
+                this.network = getIwalletJS().network;
+            }
+        }
+        else {
+            this.name = null;
+            this.network = null;
+        }
     }
 }
 const createIwalletAdapterPack = () => ({

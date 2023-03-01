@@ -26,9 +26,11 @@ class IWalletIOSTAdapter {
       chainId:
         this.account.network === 'LOCALNET'
           ? 1020
+          : this.account.network === 'TESTNET'
+          ? 1023
           : this.account.network === 'MAINNET'
           ? 1024
-          : 1023,
+          : 0,
     });
   }
   setRPC(rpc: IWalletRPCAdapter) {
@@ -57,7 +59,21 @@ export type IWalletAccount = {
   network: Network;
 };
 class IWalletAccountAdapter implements IWalletAccount {
-  constructor(public name: string, public network: Network) {}
+  name: string;
+  network: Network;
+  constructor(name: string, network: Network) {
+    if (typeof name === 'string') {
+      this.name = name;
+      if (network) {
+        this.network = network;
+      } else {
+        this.network = getIwalletJS().network;
+      }
+    } else {
+      this.name = null;
+      this.network = null;
+    }
+  }
 }
 type IWalletAdapterPack = {
   IOST: typeof IWalletIOSTAdapter;
