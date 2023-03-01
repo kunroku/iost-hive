@@ -8,4 +8,4 @@ export * from './transaction';
 export * from './utils';
 export * from './account';
 export * from './iost';
-export * from './wallet';
+export * from './iwallet';

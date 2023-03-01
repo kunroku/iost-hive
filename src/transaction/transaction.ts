@@ -29,6 +29,13 @@ export class Transaction {
     actionName: string;
     data: string;
   }[] = [];
+  get actions() {
+    return JSON.parse(JSON.stringify(this.#actions)) as {
+      contract: string;
+      actionName: string;
+      data: string;
+    }[];
+  }
   #publisher = '';
   #publisher_sigs: Signature[] = [];
   #signers: string[] = [];
