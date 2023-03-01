@@ -12,7 +12,7 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
 };
 var _IWallet_instances, _a, _IWallet_instance, _IWallet_extension, _IWallet_adapter_get;
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.IWallet = exports.IWalletIOSTAdapter = void 0;
+exports.IWallet = void 0;
 const events_1 = require("events");
 const api_1 = require("../api");
 const iost_1 = require("../iost");
@@ -41,10 +41,9 @@ class IWalletIOSTAdapter {
     callABI(contract, abi, args) {
         const tx = this.iost.createTransaction({});
         tx.addAction(contract, abi, args);
-        return tx;
+        return JSON.parse(tx.toString());
     }
 }
-exports.IWalletIOSTAdapter = IWalletIOSTAdapter;
 class IWalletHTTPProviderAdapter {
     constructor(_host) {
         this._host = _host;

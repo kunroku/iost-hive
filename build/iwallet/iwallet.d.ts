@@ -3,7 +3,6 @@ import { EventEmitter } from 'events';
 import StrictEventEmitter from 'strict-event-emitter-types';
 import { RPC, TransactionPending } from '../api';
 import { TxInfo } from '../data/info';
-import { TransactionArgumentType } from '../data/params';
 import { IOST } from '../iost';
 import { Transaction } from '../transaction';
 export type Network = 'MAINNET' | 'TESTNET' | 'LOCALNET';
@@ -12,34 +11,10 @@ declare class Callback {
 }
 export type IWalletSignAndSend = (tx: Transaction) => Callback;
 export type IWalletSignMessage = (message: string) => Callback;
-export declare class IWalletIOSTAdapter {
-    signAndSend: IWalletSignAndSend;
-    signMessage: IWalletSignMessage;
-    rpc: IWalletRPCAdapter;
-    account: IWalletAccount;
-    get iost(): IOST;
-    setRPC(rpc: IWalletRPCAdapter): void;
-    get currentRPC(): IWalletRPCAdapter;
-    setAccount(account: IWalletAccountAdapter): void;
-    callABI(contract: string, abi: string, args: TransactionArgumentType[]): Transaction;
-}
-declare class IWalletHTTPProviderAdapter {
-    _host: string;
-    constructor(_host: string);
-}
-declare class IWalletRPCAdapter {
-    _provider: IWalletHTTPProviderAdapter;
-    constructor(_provider: IWalletHTTPProviderAdapter);
-}
 export type IWalletAccount = {
     name: string;
     network: Network;
 };
-declare class IWalletAccountAdapter implements IWalletAccount {
-    name: string;
-    network: Network;
-    constructor(name: string, network: Network);
-}
 export type IWalletTransactionEvents = {
     pending: (res: TransactionPending) => void;
     success: (res: TxInfo) => void;

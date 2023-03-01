@@ -15,7 +15,7 @@ class Callback {
 export type IWalletSignAndSend = (tx: Transaction) => Callback;
 export type IWalletSignMessage = (message: string) => Callback;
 
-export class IWalletIOSTAdapter {
+class IWalletIOSTAdapter {
   signAndSend: IWalletSignAndSend;
   signMessage: IWalletSignMessage;
   rpc: IWalletRPCAdapter;
@@ -43,7 +43,7 @@ export class IWalletIOSTAdapter {
   callABI(contract: string, abi: string, args: TransactionArgumentType[]) {
     const tx = this.iost.createTransaction({});
     tx.addAction(contract, abi, args);
-    return tx;
+    return JSON.parse(tx.toString());
   }
 }
 class IWalletHTTPProviderAdapter {

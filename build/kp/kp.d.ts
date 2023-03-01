@@ -7,7 +7,7 @@ export declare class KeyPair extends AbstractKeyPair {
     constructor(type: KeyPairAlgorithm, pubkey: Buffer, seckey: Buffer | null);
     sign(data: Buffer): import("..").Signature;
     verify(data: Buffer, signature: Buffer): boolean;
-    static fromPublicKey(type: KeyPairAlgorithm, pubkey: Buffer): Ed25519 | Secp256k1;
-    static fromSecretKey(type: KeyPairAlgorithm, seckey: Buffer): Ed25519 | Secp256k1;
-    static parse(data: string): Ed25519 | Secp256k1;
+    static fromPublicKey(type: KeyPairAlgorithm, pubkey: Buffer): Secp256k1 | Ed25519;
+    static fromSecretKey(type: KeyPairAlgorithm, seckey: Buffer): Secp256k1 | Ed25519;
+    static parse(data: string): Secp256k1 | Ed25519;
 }

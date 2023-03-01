@@ -68,7 +68,7 @@ export class IOST {
       tx.addPublishSign(signatures);
     }
   }
-  createTransaction(props: TransactionProps) {
+  createTransaction(props: TransactionProps = {}) {
     const tx = new Transaction({ chainId: this.#config.chainId, ...props });
     return tx;
   }
