@@ -22,7 +22,7 @@ export class IWalletIOSTAdapter {
   account: IWalletAccount;
   get iost() {
     return new IOST({
-      host: this.rpc.provider.host,
+      host: this.rpc._provider._host,
       chainId:
         this.account.network === 'LOCALNET'
           ? 1020
@@ -34,6 +34,9 @@ export class IWalletIOSTAdapter {
   setRPC(rpc: IWalletRPCAdapter) {
     this.rpc = rpc;
   }
+  get currentRPC() {
+    return this.rpc;
+  }
   setAccount(account: IWalletAccountAdapter) {
     this.account = account;
   }
@@ -44,10 +47,10 @@ export class IWalletIOSTAdapter {
   }
 }
 class IWalletHTTPProviderAdapter {
-  constructor(public host: string) {}
+  constructor(public _host: string) {}
 }
 class IWalletRPCAdapter {
-  constructor(public provider: IWalletHTTPProviderAdapter) {}
+  constructor(public _provider: IWalletHTTPProviderAdapter) {}
 }
 export type IWalletAccount = {
   name: string;
@@ -120,7 +123,7 @@ export class IWallet {
     this.#extension.setAccount({ ...account });
   }
   get rpc() {
-    return new RPC(this.#adapter.rpc.provider.host);
+    return new RPC(this.#adapter.rpc._provider._host);
   }
   private constructor(extension: IWalletExtension) {
     this.#extension = extension;

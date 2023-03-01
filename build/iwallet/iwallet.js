@@ -21,7 +21,7 @@ class Callback {
 class IWalletIOSTAdapter {
     get iost() {
         return new iost_1.IOST({
-            host: this.rpc.provider.host,
+            host: this.rpc._provider._host,
             chainId: this.account.network === 'LOCALNET'
                 ? 1020
                 : this.account.network === 'MAINNET'
@@ -31,6 +31,9 @@ class IWalletIOSTAdapter {
     }
     setRPC(rpc) {
         this.rpc = rpc;
+    }
+    get currentRPC() {
+        return this.rpc;
     }
     setAccount(account) {
         this.account = account;
@@ -43,13 +46,13 @@ class IWalletIOSTAdapter {
 }
 exports.IWalletIOSTAdapter = IWalletIOSTAdapter;
 class IWalletHTTPProviderAdapter {
-    constructor(host) {
-        this.host = host;
+    constructor(_host) {
+        this._host = _host;
     }
 }
 class IWalletRPCAdapter {
-    constructor(provider) {
-        this.provider = provider;
+    constructor(_provider) {
+        this._provider = _provider;
     }
 }
 class IWalletAccountAdapter {
@@ -76,7 +79,7 @@ class IWallet {
         __classPrivateFieldGet(this, _IWallet_extension, "f").setAccount(Object.assign({}, account));
     }
     get rpc() {
-        return new api_1.RPC(__classPrivateFieldGet(this, _IWallet_instances, "a", _IWallet_adapter_get).rpc.provider.host);
+        return new api_1.RPC(__classPrivateFieldGet(this, _IWallet_instances, "a", _IWallet_adapter_get).rpc._provider._host);
     }
     constructor(extension) {
         _IWallet_instances.add(this);

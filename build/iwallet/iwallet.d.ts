@@ -19,16 +19,17 @@ export declare class IWalletIOSTAdapter {
     account: IWalletAccount;
     get iost(): IOST;
     setRPC(rpc: IWalletRPCAdapter): void;
+    get currentRPC(): IWalletRPCAdapter;
     setAccount(account: IWalletAccountAdapter): void;
     callABI(contract: string, abi: string, args: TransactionArgumentType[]): Transaction;
 }
 declare class IWalletHTTPProviderAdapter {
-    host: string;
-    constructor(host: string);
+    _host: string;
+    constructor(_host: string);
 }
 declare class IWalletRPCAdapter {
-    provider: IWalletHTTPProviderAdapter;
-    constructor(provider: IWalletHTTPProviderAdapter);
+    _provider: IWalletHTTPProviderAdapter;
+    constructor(_provider: IWalletHTTPProviderAdapter);
 }
 export type IWalletAccount = {
     name: string;
