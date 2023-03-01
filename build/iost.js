@@ -41,7 +41,7 @@ class IOST {
         return !!__classPrivateFieldGet(this, _IOST_iwallet, "f");
     }
     get rpc() {
-        return new api_1.RPC(__classPrivateFieldGet(this, _IOST_config, "f").host);
+        return new api_1.RPC(this.config.host);
     }
     constructor(config = {}) {
         _IOST_iwallet.set(this, void 0);

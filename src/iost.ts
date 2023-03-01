@@ -35,7 +35,7 @@ export class IOST {
     return !!this.#iwallet;
   }
   get rpc() {
-    return new RPC(this.#config.host);
+    return new RPC(this.config.host);
   }
   constructor(config: Partial<IOSTConfig> = {}) {
     if (config instanceof IWallet) {

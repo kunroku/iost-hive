@@ -1,7 +1,6 @@
 /// <reference types="node" />
 import { EventEmitter } from 'events';
 import StrictEventEmitter from 'strict-event-emitter-types';
-import { RPC } from '../api';
 import { TxReceiptInfo } from '../data/info';
 import { IOSTConfig } from '../data/params';
 import { Transaction } from '../transaction';
@@ -36,7 +35,6 @@ export declare class IWallet implements IOSTConfig {
     get chainId(): number;
     get account(): IWalletAccount;
     set account(account: IWalletAccount);
-    get rpc(): RPC;
     private constructor();
     static connect(): Promise<IWallet>;
     signAndSend(tx: Transaction): StrictEventEmitter<EventEmitter, IWalletTransactionEvents, IWalletTransactionEvents, "addEventListener" | "removeEventListener", "on" | "addListener" | "removeListener" | "once" | "emit">;

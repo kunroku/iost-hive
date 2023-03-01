@@ -14,7 +14,6 @@ var _a, _IWalletAdapterPack_host, _IWalletAdapterPack_chainId, _IWallet_instance
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.IWallet = void 0;
 const events_1 = require("events");
-const api_1 = require("../api");
 const transaction_1 = require("../transaction");
 class Callback {
 }
@@ -108,9 +107,6 @@ class IWallet {
     }
     set account(account) {
         __classPrivateFieldGet(this, _IWallet_extension, "f").setAccount(Object.assign({}, account));
-    }
-    get rpc() {
-        return new api_1.RPC(this.host);
     }
     constructor(extension) {
         _IWallet_instances.add(this);

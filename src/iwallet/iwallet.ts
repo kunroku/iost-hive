@@ -1,6 +1,5 @@
 import { EventEmitter } from 'events';
 import StrictEventEmitter from 'strict-event-emitter-types';
-import { RPC } from '../api';
 import { TxReceiptInfo } from '../data/info';
 import { IOSTConfig, TransactionArgumentType } from '../data/params';
 import { Transaction } from '../transaction';
@@ -239,9 +238,6 @@ export class IWallet implements IOSTConfig {
   }
   set account(account: IWalletAccount) {
     this.#extension.setAccount({ ...account });
-  }
-  get rpc() {
-    return new RPC(this.host);
   }
   private constructor(extension: IWalletExtension) {
     this.#extension = extension;
