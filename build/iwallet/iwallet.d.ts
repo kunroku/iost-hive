@@ -1,8 +1,8 @@
 /// <reference types="node" />
 import { EventEmitter } from 'events';
 import StrictEventEmitter from 'strict-event-emitter-types';
-import { RPC, TransactionPending } from '../api';
-import { TxInfo } from '../data/info';
+import { RPC } from '../api';
+import { TxReceiptInfo } from '../data/info';
 import { IOST } from '../iost';
 import { Transaction } from '../transaction';
 export type Network = 'MAINNET' | 'TESTNET' | 'LOCALNET';
@@ -16,8 +16,8 @@ export type IWalletAccount = {
     network: Network;
 };
 export type IWalletTransactionEvents = {
-    pending: (res: TransactionPending) => void;
-    success: (res: TxInfo) => void;
+    pending: (tx_hash: string) => void;
+    success: (res: TxReceiptInfo) => void;
     failed: (error: {
         message: string;
     }) => void;
@@ -46,7 +46,7 @@ export declare class IWallet {
     private constructor();
     static connect(): Promise<IWallet>;
     signAndSend(tx: Transaction): StrictEventEmitter<EventEmitter, IWalletTransactionEvents, IWalletTransactionEvents, "addEventListener" | "removeEventListener", "on" | "addListener" | "removeListener" | "once" | "emit">;
-    signAndSendAsync(tx: Transaction): Promise<TxInfo>;
+    signAndSendAsync(tx: Transaction): Promise<TxReceiptInfo>;
     signMessage(message: string): StrictEventEmitter<EventEmitter, IWalletSignEvents, IWalletSignEvents, "addEventListener" | "removeEventListener", "on" | "addListener" | "removeListener" | "once" | "emit">;
     signMessageAsync(message: string): Promise<IWalletSignature>;
     setAccount(account: IWalletAccount): void;

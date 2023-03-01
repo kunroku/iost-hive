@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events';
 import StrictEventEmitter from 'strict-event-emitter-types';
-import { RPC, TransactionPending } from '../api';
-import { TxInfo } from '../data/info';
+import { RPC } from '../api';
+import { TxReceiptInfo } from '../data/info';
 import { TransactionArgumentType } from '../data/params';
 import { IOST } from '../iost';
 import { Transaction } from '../transaction';
@@ -102,8 +102,8 @@ type IWalletExtension = {
 const getIwalletJS = () => window['IWalletJS'] as IWalletExtension | undefined;
 
 export type IWalletTransactionEvents = {
-  pending: (res: TransactionPending) => void;
-  success: (res: TxInfo) => void;
+  pending: (tx_hash: string) => void;
+  success: (res: TxReceiptInfo) => void;
   failed: (error: { message: string }) => void;
 };
 
@@ -168,7 +168,7 @@ export class IWallet {
     handler.on('failed', (res) => event.emit('failed', res));
     return event;
   }
-  async signAndSendAsync(tx: Transaction): Promise<TxInfo> {
+  async signAndSendAsync(tx: Transaction): Promise<TxReceiptInfo> {
     const event = this.signAndSend(tx);
     return await new Promise((resolve, reject) => {
       event.on('success', (res) => {
