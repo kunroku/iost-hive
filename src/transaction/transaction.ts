@@ -146,7 +146,7 @@ export class Transaction {
   toString() {
     return JSON.stringify({
       amount_limit: this.#amount_limit,
-      chainId: this.#chainId,
+      chain_id: this.#chainId,
       gasLimit: this.#gasLimit,
       gasRatio: this.#gasRatio,
       actions: this.#actions,

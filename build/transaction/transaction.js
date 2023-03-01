@@ -135,7 +135,7 @@ class Transaction {
     toString() {
         return JSON.stringify({
             amount_limit: __classPrivateFieldGet(this, _Transaction_amount_limit, "f"),
-            chainId: __classPrivateFieldGet(this, _Transaction_chainId, "f"),
+            chain_id: __classPrivateFieldGet(this, _Transaction_chainId, "f"),
             gasLimit: __classPrivateFieldGet(this, _Transaction_gasLimit, "f"),
             gasRatio: __classPrivateFieldGet(this, _Transaction_gasRatio, "f"),
             actions: __classPrivateFieldGet(this, _Transaction_actions, "f"),
