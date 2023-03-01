@@ -11,8 +11,8 @@ class Callback {
   on: (msg: string, func: (res: any) => void) => Callback;
 }
 
-export type IWalletSignAndSend = (tx: Transaction) => Callback;
-export type IWalletSignMessage = (message: string) => Callback;
+type IWalletSignAndSend = (tx: Transaction) => Callback;
+type IWalletSignMessage = (message: string) => Callback;
 
 type IOSTAdapterConfig = {
   gasPrice: number;
@@ -40,7 +40,7 @@ type IOSTAdapter = {
   callABI(contract: string, abi: string, args: TransactionArgumentType[]): any;
 };
 
-export class IWalletAdapterPack {
+class IWalletAdapterPack {
   static #host: string;
   static #chainId: number;
   static get IOST() {
@@ -203,13 +203,11 @@ type IWalletExtension = {
 
 const getIwalletJS = () => window['IWalletJS'] as IWalletExtension | undefined;
 
-export type IWalletTransactionEvents = {
+type IWalletTransactionEvents = {
   pending: (tx_hash: string) => void;
   success: (res: TxReceiptInfo) => void;
   failed: (error: { message: string }) => void;
 };
-
-export type IWalletTransactionHandlerStatus = 'pending' | 'success' | 'failed';
 
 export type IWalletSignature = {
   algorithm: string;
@@ -218,12 +216,11 @@ export type IWalletSignature = {
   message: string;
 };
 
-export type IWalletSignEvents = {
+type IWalletSignEvents = {
   pending: () => void;
   success: (res: IWalletSignature) => void;
   failed: (error: { message: string }) => void;
 };
-export type IWalletSignHandlerStatus = 'pending' | 'success' | 'failed';
 
 export class IWallet implements IOSTConfig {
   static #instance: IWallet;
@@ -235,7 +232,7 @@ export class IWallet implements IOSTConfig {
   }
   #extension: IWalletExtension;
   get #adapter() {
-    return this.#extension.newIOST(new IWalletAdapterPack());
+    return this.#extension.newIOST(IWalletAdapterPack);
   }
   get account() {
     return { ...this.#adapter.account };
@@ -244,7 +241,7 @@ export class IWallet implements IOSTConfig {
     this.#extension.setAccount({ ...account });
   }
   get rpc() {
-    return new RPC(this.#adapter.rpc._provider._host);
+    return new RPC(this.host);
   }
   private constructor(extension: IWalletExtension) {
     this.#extension = extension;

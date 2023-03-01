@@ -12,7 +12,7 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
 };
 var _a, _IWalletAdapterPack_host, _IWalletAdapterPack_chainId, _IWallet_instances, _b, _IWallet_instance, _IWallet_extension, _IWallet_adapter_get;
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.IWallet = exports.IWalletAdapterPack = void 0;
+exports.IWallet = void 0;
 const events_1 = require("events");
 const api_1 = require("../api");
 const transaction_1 = require("../transaction");
@@ -92,7 +92,6 @@ class IWalletAdapterPack {
         };
     }
 }
-exports.IWalletAdapterPack = IWalletAdapterPack;
 _a = IWalletAdapterPack;
 _IWalletAdapterPack_host = { value: void 0 };
 _IWalletAdapterPack_chainId = { value: void 0 };
@@ -111,7 +110,7 @@ class IWallet {
         __classPrivateFieldGet(this, _IWallet_extension, "f").setAccount(Object.assign({}, account));
     }
     get rpc() {
-        return new api_1.RPC(__classPrivateFieldGet(this, _IWallet_instances, "a", _IWallet_adapter_get).rpc._provider._host);
+        return new api_1.RPC(this.host);
     }
     constructor(extension) {
         _IWallet_instances.add(this);
@@ -178,7 +177,7 @@ class IWallet {
 }
 exports.IWallet = IWallet;
 _b = IWallet, _IWallet_extension = new WeakMap(), _IWallet_instances = new WeakSet(), _IWallet_adapter_get = function _IWallet_adapter_get() {
-    return __classPrivateFieldGet(this, _IWallet_extension, "f").newIOST(new IWalletAdapterPack());
+    return __classPrivateFieldGet(this, _IWallet_extension, "f").newIOST(IWalletAdapterPack);
 };
 _IWallet_instance = { value: void 0 };
 //# sourceMappingURL=iwallet.js.map
