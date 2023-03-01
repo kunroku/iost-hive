@@ -86,7 +86,7 @@ export class IOST {
     }
   }
   createTransaction(props: TransactionProps = {}) {
-    const tx = new Transaction({ chainId: this.#config.chainId, ...props });
+    const tx = new Transaction({ chainId: this.config.chainId, ...props });
     return tx;
   }
   async exec(tx: Transaction) {

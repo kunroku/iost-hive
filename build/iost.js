@@ -83,7 +83,7 @@ class IOST {
         }
     }
     createTransaction(props = {}) {
-        const tx = new transaction_1.Transaction(Object.assign({ chainId: __classPrivateFieldGet(this, _IOST_config, "f").chainId }, props));
+        const tx = new transaction_1.Transaction(Object.assign({ chainId: this.config.chainId }, props));
         return tx;
     }
     async exec(tx) {
