@@ -3,7 +3,7 @@ import { EventEmitter } from 'events';
 import StrictEventEmitter from 'strict-event-emitter-types';
 import { RPC } from '../api';
 import { TxReceiptInfo } from '../data/info';
-import { IOST } from '../iost';
+import { IOSTConfig } from '../data/params';
 import { Transaction } from '../transaction';
 export type Network = 'MAINNET' | 'TESTNET' | 'LOCALNET';
 declare class Callback {
@@ -37,9 +37,10 @@ export type IWalletSignEvents = {
     }) => void;
 };
 export type IWalletSignHandlerStatus = 'pending' | 'success' | 'failed';
-export declare class IWallet {
+export declare class IWallet implements IOSTConfig {
     #private;
-    get iost(): IOST;
+    get host(): string;
+    get chainId(): 1024 | 0 | 1020 | 1023;
     get account(): IWalletAccount;
     set account(account: IWalletAccount);
     get rpc(): RPC;

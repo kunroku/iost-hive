@@ -10,30 +10,54 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
-var _IOST_config, _IOST_serverTimeDiff;
+var _IOST_iwallet, _IOST_config, _IOST_serverTimeDiff;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.IOST = void 0;
 const api_1 = require("./api");
 const transaction_1 = require("./transaction/transaction");
 const transaction_handler_1 = require("./transaction/transaction-handler");
+const iwallet_1 = require("./iwallet");
 const defaultConfig = {
     host: 'http://localhost:30001',
     chainId: 1024,
 };
 class IOST {
     get config() {
-        return Object.assign({}, __classPrivateFieldGet(this, _IOST_config, "f"));
+        if (__classPrivateFieldGet(this, _IOST_iwallet, "f")) {
+            const { host, chainId } = __classPrivateFieldGet(this, _IOST_iwallet, "f");
+            return { host, chainId };
+        }
+        else {
+            return Object.assign({}, __classPrivateFieldGet(this, _IOST_config, "f"));
+        }
     }
     get serverTimeDiff() {
         return __classPrivateFieldGet(this, _IOST_serverTimeDiff, "f");
     }
-    constructor(config = {}) {
-        _IOST_config.set(this, void 0);
-        _IOST_serverTimeDiff.set(this, 0);
-        __classPrivateFieldSet(this, _IOST_config, Object.assign(Object.assign({}, defaultConfig), config), "f");
+    get iwallet() {
+        return __classPrivateFieldGet(this, _IOST_iwallet, "f");
+    }
+    get connected() {
+        return !!__classPrivateFieldGet(this, _IOST_iwallet, "f");
     }
     get rpc() {
         return new api_1.RPC(__classPrivateFieldGet(this, _IOST_config, "f").host);
+    }
+    constructor(config = {}) {
+        _IOST_iwallet.set(this, void 0);
+        _IOST_config.set(this, void 0);
+        _IOST_serverTimeDiff.set(this, 0);
+        if (config instanceof iwallet_1.IWallet) {
+            __classPrivateFieldSet(this, _IOST_iwallet, config, "f");
+        }
+        else {
+            __classPrivateFieldSet(this, _IOST_config, Object.assign(Object.assign({}, defaultConfig), config), "f");
+        }
+    }
+    static async connect() {
+        const iwallet = await iwallet_1.IWallet.connect();
+        const iost = new IOST(iwallet);
+        return iost;
     }
     async setServerTimeDiff() {
         const requestStartTime = new Date().getTime() * 1e6;
@@ -75,5 +99,5 @@ class IOST {
     }
 }
 exports.IOST = IOST;
-_IOST_config = new WeakMap(), _IOST_serverTimeDiff = new WeakMap();
+_IOST_iwallet = new WeakMap(), _IOST_config = new WeakMap(), _IOST_serverTimeDiff = new WeakMap();
 //# sourceMappingURL=iost.js.map

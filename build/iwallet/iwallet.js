@@ -15,21 +15,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.IWallet = void 0;
 const events_1 = require("events");
 const api_1 = require("../api");
-const iost_1 = require("../iost");
+const transaction_1 = require("../transaction");
 class Callback {
 }
 class IWalletIOSTAdapter {
-    get iost() {
-        return new iost_1.IOST({
-            host: this.rpc._provider._host,
-            chainId: this.account.network === 'LOCALNET'
-                ? 1020
-                : this.account.network === 'TESTNET'
-                    ? 1023
-                    : this.account.network === 'MAINNET'
-                        ? 1024
-                        : 0,
-        });
+    get host() {
+        return this.rpc._provider._host;
+    }
+    get chainId() {
+        return this.account.network === 'LOCALNET'
+            ? 1020
+            : this.account.network === 'TESTNET'
+                ? 1023
+                : this.account.network === 'MAINNET'
+                    ? 1024
+                    : 0;
     }
     setRPC(rpc) {
         this.rpc = rpc;
@@ -41,7 +41,7 @@ class IWalletIOSTAdapter {
         this.account = account;
     }
     callABI(contract, abi, args) {
-        const tx = this.iost.createTransaction({});
+        const tx = new transaction_1.Transaction({ chainId: this.chainId });
         tx.addAction(contract, abi, args);
         return JSON.parse(tx.toString());
     }
@@ -81,8 +81,11 @@ const createIwalletAdapterPack = () => ({
 });
 const getIwalletJS = () => window['IWalletJS'];
 class IWallet {
-    get iost() {
-        return __classPrivateFieldGet(this, _IWallet_instances, "a", _IWallet_adapter_get).iost;
+    get host() {
+        return __classPrivateFieldGet(this, _IWallet_instances, "a", _IWallet_adapter_get).host;
+    }
+    get chainId() {
+        return __classPrivateFieldGet(this, _IWallet_instances, "a", _IWallet_adapter_get).chainId;
     }
     get account() {
         return Object.assign({}, __classPrivateFieldGet(this, _IWallet_instances, "a", _IWallet_adapter_get).account);

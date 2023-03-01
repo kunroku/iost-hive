@@ -1,19 +1,19 @@
 /// <reference types="node" />
 import { RPC } from './api';
-import { KeyPairPermission } from './data/params';
+import { IOSTConfig, KeyPairPermission } from './data/params';
 import { Transaction, TransactionProps } from './transaction/transaction';
 import { TransactionHandlerConfig } from './transaction/transaction-handler';
 import { Wallet } from './wallet';
-export type IOSTConfig = {
-    host: string;
-    chainId: number;
-};
+import { IWallet } from './iwallet';
 export declare class IOST {
     #private;
     get config(): IOSTConfig;
     get serverTimeDiff(): number;
-    constructor(config?: Partial<IOSTConfig>);
+    get iwallet(): IWallet;
+    get connected(): boolean;
     get rpc(): RPC;
+    constructor(config?: Partial<IOSTConfig>);
+    static connect(): Promise<IOST>;
     setServerTimeDiff(): Promise<number>;
     sign(wallet: Wallet, tx: Transaction, publisher: string, signers: {
         id: string;

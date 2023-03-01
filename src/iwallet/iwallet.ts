@@ -2,8 +2,7 @@ import { EventEmitter } from 'events';
 import StrictEventEmitter from 'strict-event-emitter-types';
 import { RPC } from '../api';
 import { TxReceiptInfo } from '../data/info';
-import { TransactionArgumentType } from '../data/params';
-import { IOST } from '../iost';
+import { IOSTConfig, TransactionArgumentType } from '../data/params';
 import { Transaction } from '../transaction';
 
 export type Network = 'MAINNET' | 'TESTNET' | 'LOCALNET';
@@ -20,18 +19,17 @@ class IWalletIOSTAdapter {
   signMessage: IWalletSignMessage;
   rpc: IWalletRPCAdapter;
   account: IWalletAccount;
-  get iost() {
-    return new IOST({
-      host: this.rpc._provider._host,
-      chainId:
-        this.account.network === 'LOCALNET'
-          ? 1020
-          : this.account.network === 'TESTNET'
-          ? 1023
-          : this.account.network === 'MAINNET'
-          ? 1024
-          : 0,
-    });
+  get host() {
+    return this.rpc._provider._host;
+  }
+  get chainId() {
+    return this.account.network === 'LOCALNET'
+      ? 1020
+      : this.account.network === 'TESTNET'
+      ? 1023
+      : this.account.network === 'MAINNET'
+      ? 1024
+      : 0;
   }
   setRPC(rpc: IWalletRPCAdapter) {
     this.rpc = rpc;
@@ -43,7 +41,7 @@ class IWalletIOSTAdapter {
     this.account = account;
   }
   callABI(contract: string, abi: string, args: TransactionArgumentType[]) {
-    const tx = this.iost.createTransaction({});
+    const tx = new Transaction({ chainId: this.chainId });
     tx.addAction(contract, abi, args);
     return JSON.parse(tx.toString());
   }
@@ -123,12 +121,15 @@ export type IWalletSignEvents = {
 };
 export type IWalletSignHandlerStatus = 'pending' | 'success' | 'failed';
 
-export class IWallet {
+export class IWallet implements IOSTConfig {
   static #instance: IWallet;
-  #extension: IWalletExtension;
-  get iost() {
-    return this.#adapter.iost;
+  get host() {
+    return this.#adapter.host;
   }
+  get chainId() {
+    return this.#adapter.chainId;
+  }
+  #extension: IWalletExtension;
   get #adapter() {
     return this.#extension.newIOST(createIwalletAdapterPack());
   }

@@ -1,16 +1,12 @@
 import { RPC } from './api';
-import { KeyPairPermission } from './data/params';
+import { IOSTConfig, KeyPairPermission } from './data/params';
 import { Transaction, TransactionProps } from './transaction/transaction';
 import {
   TransactionHandler,
   TransactionHandlerConfig,
 } from './transaction/transaction-handler';
 import { Wallet } from './wallet';
-
-export type IOSTConfig = {
-  host: string;
-  chainId: number;
-};
+import { IWallet } from './iwallet';
 
 const defaultConfig: IOSTConfig = {
   host: 'http://localhost:30001',
@@ -18,19 +14,40 @@ const defaultConfig: IOSTConfig = {
 };
 
 export class IOST {
+  readonly #iwallet: IWallet;
   readonly #config: IOSTConfig;
   #serverTimeDiff = 0;
   get config(): IOSTConfig {
-    return { ...this.#config };
+    if (this.#iwallet) {
+      const { host, chainId } = this.#iwallet;
+      return { host, chainId };
+    } else {
+      return { ...this.#config };
+    }
   }
   get serverTimeDiff() {
     return this.#serverTimeDiff;
   }
-  constructor(config: Partial<IOSTConfig> = {}) {
-    this.#config = { ...defaultConfig, ...config };
+  get iwallet() {
+    return this.#iwallet;
+  }
+  get connected() {
+    return !!this.#iwallet;
   }
   get rpc() {
     return new RPC(this.#config.host);
+  }
+  constructor(config: Partial<IOSTConfig> = {}) {
+    if (config instanceof IWallet) {
+      this.#iwallet = config;
+    } else {
+      this.#config = { ...defaultConfig, ...config };
+    }
+  }
+  static async connect() {
+    const iwallet = await IWallet.connect();
+    const iost = new IOST(iwallet);
+    return iost;
   }
   async setServerTimeDiff() {
     const requestStartTime = new Date().getTime() * 1e6;
