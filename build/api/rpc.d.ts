@@ -34,6 +34,9 @@ export declare class RPC extends RPCAdapter {
     getCandidateBonus(name: string, byLongestChain?: boolean): Promise<RPCResponse.CandidateBonus>;
     getVoterBonus(name: string, byLongestChain?: boolean): Promise<RPCResponse.VoterBonus>;
     getTokenInfo(symbol: string, byLongestChain?: boolean): Promise<TokenInfo>;
+    getToken721Balance(address: string, symbol: string, byLongestChain?: boolean): Promise<RPCResponse.Token721Balance>;
+    getToken721Metadata(symbol: string, tokenID: string, byLongestChain?: boolean): Promise<RPCResponse.Token721Metadata>;
+    getToken721Owner(symbol: string, tokenID: string, byLongestChain?: boolean): Promise<RPCResponse.Token721Owner>;
     listContractStorage(contract: string, limit?: number, byLongestChain?: boolean): Promise<RPCResponse.ContractStorageList>;
     listContractStorageMap(contract: string, limit?: number, byLongestChain?: boolean): Promise<RPCResponse.ContractStorageList>;
     listContractStorageMapByPrefix(contract: string, prefix: string, limit?: number, byLongestChain?: boolean): Promise<RPCResponse.ContractStorageList>;

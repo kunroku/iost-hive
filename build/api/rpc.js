@@ -154,6 +154,18 @@ class RPC extends iwallet_adapter_1.RPCAdapter {
         const url = `getTokenInfo/${symbol}/${byLongestChain}`;
         return await this._provider.get(url);
     }
+    async getToken721Balance(address, symbol, byLongestChain = true) {
+        const url = `getToken721Balance/${address}/${symbol}/${byLongestChain}`;
+        return await this._provider.get(url);
+    }
+    async getToken721Metadata(symbol, tokenID, byLongestChain = true) {
+        const url = `getToken721Metadata/${symbol}/${tokenID}/${byLongestChain}`;
+        return await this._provider.get(url);
+    }
+    async getToken721Owner(symbol, tokenID, byLongestChain = true) {
+        const url = `getToken721Owner/${symbol}/${tokenID}/${byLongestChain}`;
+        return await this._provider.get(url);
+    }
     async listContractStorage(contract, limit = 100, byLongestChain = true) {
         const url = `listContractStorage`;
         return await this._provider.post(url, {

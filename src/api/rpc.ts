@@ -170,31 +170,30 @@ export class RPC extends RPCAdapter {
     const url = `getTokenInfo/${symbol}/${byLongestChain}`;
     return await this._provider.get<TokenInfo>(url);
   }
-  /* 非公式API */
-  // async getToken721Balance(
-  //   address: string,
-  //   symbol: string,
-  //   byLongestChain = true,
-  // ) {
-  //   const url = `getToken721Balance/${address}/${symbol}/${byLongestChain}`;
-  //   return await this._get<Token721Balance>(url);
-  // }
-  // async getToken721Metadata(
-  //   symbol: string,
-  //   tokenID: string,
-  //   byLongestChain = true,
-  // ) {
-  //   const url = `getToken721Metadata/${symbol}/${tokenID}/${byLongestChain}`;
-  //   return await this._get<Token721Metadata>(url);
-  // }
-  // async getToken721Owner(
-  //   symbol: string,
-  //   tokenID: string,
-  //   byLongestChain = true,
-  // ) {
-  //   const url = `getToken721Owner/${symbol}/${tokenID}/${byLongestChain}`;
-  //   return await this._get<Token721Owner>(url);
-  // }
+  async getToken721Balance(
+    address: string,
+    symbol: string,
+    byLongestChain = true,
+  ) {
+    const url = `getToken721Balance/${address}/${symbol}/${byLongestChain}`;
+    return await this._provider.get<RPCResponse.Token721Balance>(url);
+  }
+  async getToken721Metadata(
+    symbol: string,
+    tokenID: string,
+    byLongestChain = true,
+  ) {
+    const url = `getToken721Metadata/${symbol}/${tokenID}/${byLongestChain}`;
+    return await this._provider.get<RPCResponse.Token721Metadata>(url);
+  }
+  async getToken721Owner(
+    symbol: string,
+    tokenID: string,
+    byLongestChain = true,
+  ) {
+    const url = `getToken721Owner/${symbol}/${tokenID}/${byLongestChain}`;
+    return await this._provider.get<RPCResponse.Token721Owner>(url);
+  }
   async listContractStorage(
     contract: string,
     limit = 100,
