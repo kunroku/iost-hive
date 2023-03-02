@@ -31,9 +31,6 @@ export class IOST {
   get iwallet() {
     return this.#iwallet;
   }
-  get connected() {
-    return !!this.#iwallet;
-  }
   get rpc() {
     return new RPC(new HTTPProvider(this.config.host));
   }
@@ -68,7 +65,7 @@ export class IOST {
       tx.addSigner(signer.id, signer.permission);
     }
     for (const signer of signers) {
-      const signatures = await wallet.sign(
+      const signatures = wallet.sign(
         signer.id,
         signer.permission,
         tx.getBaseHash(),
@@ -76,11 +73,7 @@ export class IOST {
       tx.addSign(signatures);
     }
     if (publisher) {
-      const signatures = await wallet.sign(
-        publisher,
-        'active',
-        tx.getPublishHash(),
-      );
+      const signatures = wallet.sign(publisher, 'active', tx.getPublishHash());
       tx.setPublisher(publisher);
       tx.addPublishSign(signatures);
     }

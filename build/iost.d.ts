@@ -10,7 +10,6 @@ export declare class IOST {
     get config(): IOSTConfig;
     get serverTimeDiff(): number;
     get iwallet(): IWallet;
-    get connected(): boolean;
     get rpc(): RPC;
     constructor(config?: Partial<IOSTConfig>);
     static connect(): Promise<IOST>;

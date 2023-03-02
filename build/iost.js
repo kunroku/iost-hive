@@ -37,9 +37,6 @@ class IOST {
     get iwallet() {
         return __classPrivateFieldGet(this, _IOST_iwallet, "f");
     }
-    get connected() {
-        return !!__classPrivateFieldGet(this, _IOST_iwallet, "f");
-    }
     get rpc() {
         return new api_1.RPC(new api_1.HTTPProvider(this.config.host));
     }
@@ -73,11 +70,11 @@ class IOST {
             tx.addSigner(signer.id, signer.permission);
         }
         for (const signer of signers) {
-            const signatures = await wallet.sign(signer.id, signer.permission, tx.getBaseHash());
+            const signatures = wallet.sign(signer.id, signer.permission, tx.getBaseHash());
             tx.addSign(signatures);
         }
         if (publisher) {
-            const signatures = await wallet.sign(publisher, 'active', tx.getPublishHash());
+            const signatures = wallet.sign(publisher, 'active', tx.getPublishHash());
             tx.setPublisher(publisher);
             tx.addPublishSign(signatures);
         }
