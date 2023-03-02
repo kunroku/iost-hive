@@ -1,30 +1,27 @@
 import { AbstractKeyPair, KeyPair, KeyPairJSON } from './kp';
 import { KeyPairPermission } from './data/params';
 import { Bs58 } from './utils/bs58';
+import { AccountAdapter } from './iwallet/iwallet-adapter';
 
 export type AccountJSON = {
-  id: string;
+  name: string;
   auth: {
     active: KeyPairJSON[];
     owner: KeyPairJSON[];
   };
 };
 
-export class Account {
+export class Account extends AccountAdapter {
   readonly #auth: {
     active: AbstractKeyPair[];
     owner: AbstractKeyPair[];
   };
-  readonly #id: string;
-  get id() {
-    return this.#id;
-  }
-  constructor(id: string) {
+  constructor(name: string) {
+    super(name);
     this.#auth = {
       active: [],
       owner: [],
     };
-    this.#id = id;
   }
   addKeyPair(permission: KeyPairPermission, keyPair: AbstractKeyPair) {
     this.#auth[permission].push(keyPair);
@@ -44,7 +41,7 @@ export class Account {
   }
   toJSON() {
     const json: AccountJSON = {
-      id: this.id,
+      name: this.name,
       auth: { active: [], owner: [] },
     };
     for (const keyPair of this.#auth.active) {
@@ -59,8 +56,8 @@ export class Account {
     return JSON.stringify(this.toJSON());
   }
   static parse(data: string) {
-    const { id, auth } = JSON.parse(data) as AccountJSON;
-    const account = new Account(id);
+    const { name, auth } = JSON.parse(data) as AccountJSON;
+    const account = new Account(name);
     for (const permission of ['active', 'owner'] as KeyPairPermission[]) {
       for (const key of auth[permission]) {
         const kp = new KeyPair(

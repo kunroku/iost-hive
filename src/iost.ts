@@ -1,4 +1,4 @@
-import { RPC } from './api';
+import { RPC, HTTPProvider } from './api';
 import { IOSTConfig, KeyPairPermission } from './data/params';
 import { Transaction, TransactionProps } from './transaction/transaction';
 import {
@@ -35,7 +35,7 @@ export class IOST {
     return !!this.#iwallet;
   }
   get rpc() {
-    return new RPC(this.config.host);
+    return new RPC(new HTTPProvider(this.config.host));
   }
   constructor(config: Partial<IOSTConfig> = {}) {
     if (config instanceof IWallet) {

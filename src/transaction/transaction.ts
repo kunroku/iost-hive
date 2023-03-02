@@ -1,6 +1,6 @@
 import { sha3 } from '../utils/sha3';
 import { Codec } from '../crypto/codec';
-import { Signature } from '../crypto/signature';
+import { Signature, SignatureStruct } from '../crypto/signature';
 import {
   AmountLimit,
   KeyPairPermission,
@@ -17,6 +17,26 @@ const defaultTransactionConfig: Required<TransactionProps> = {
   chainId: 1024,
   gasLimit: 100000,
   gasRatio: 1,
+};
+
+export type TransactionStruct = {
+  amount_limit: AmountLimit[];
+  chain_id: number;
+  gasLimit: number;
+  gasRatio: number;
+  actions: {
+    contract: string;
+    actionName: string;
+    data: string;
+  }[];
+  publisher: string;
+  publisher_sigs: SignatureStruct[];
+  signers: string[];
+  signatures: SignatureStruct[];
+  reserved: null;
+  time: number;
+  expiration: number;
+  delay: number;
 };
 
 export class Transaction {
@@ -143,21 +163,24 @@ export class Transaction {
     }
     return c.toBuffer();
   }
-  toString() {
-    return JSON.stringify({
-      amount_limit: this.#amount_limit,
+  toJSON(): TransactionStruct {
+    return {
+      amount_limit: this.#amount_limit.map((e) => ({ ...e })),
       chain_id: this.#chainId,
       gasLimit: this.#gasLimit,
       gasRatio: this.#gasRatio,
-      actions: this.#actions,
+      actions: this.#actions.map((e) => ({ ...e })),
       publisher: this.#publisher,
-      publisher_sigs: this.#publisher_sigs,
-      signers: this.#signers,
-      signatures: this.#signatures,
+      publisher_sigs: this.#publisher_sigs.map((e) => e.toJSON()),
+      signers: [...this.#signers],
+      signatures: this.#signatures.map((e) => e.toJSON()),
       reserved: this.#reserved,
       time: this.#time,
       expiration: this.#expiration,
       delay: this.#delay,
-    });
+    };
+  }
+  toString() {
+    return JSON.stringify(this.toJSON());
   }
 }

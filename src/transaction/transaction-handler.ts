@@ -1,7 +1,8 @@
 import { EventEmitter } from 'events';
 import StrictEventEmitter from 'strict-event-emitter-types';
-import { TransactionPending, RPC } from '../api';
+import { HTTPProvider, RPC } from '../api';
 import { TxInfo } from '../data/info';
+import { TransactionPending } from '../data/rpc-resopnse';
 import { Transaction } from './transaction';
 
 export type TransactionHandlerConfig = {
@@ -45,7 +46,7 @@ export class TransactionHandler {
     config: Partial<TransactionHandlerConfig>,
   ) {
     this.#tx = tx;
-    this.#rpc = new RPC(host);
+    this.#rpc = new RPC(new HTTPProvider(host));
     this.#config = { ...defaultTransactionConfig, ...config };
   }
   send() {

@@ -73,7 +73,7 @@ export class Wallet {
   #password: string;
   #walletRequestHandler: WalletRequestHandlerInterface;
   get accounts() {
-    return this.#accounts.map((acc) => acc.id);
+    return this.#accounts.map((acc) => acc.name);
   }
   constructor(
     accounts: Account[],
@@ -87,28 +87,28 @@ export class Wallet {
     this.#walletRequestHandler = walletRequestHandler;
   }
   #sign(id: string, permission: KeyPairPermission, data: Buffer) {
-    const account = this.#accounts.find((e) => e.id === id);
+    const account = this.#accounts.find((e) => e.name === id);
     if (!account) {
       throw new Error(`account not found ${id}`);
     }
     return account.sign(permission, data);
   }
   #addAccount(account: Account) {
-    const index = this.#accounts.findIndex((e) => e.id === account.id);
+    const index = this.#accounts.findIndex((e) => e.name === account.name);
     if (index !== -1) {
-      throw new Error(`account already exits ${account.id}`);
+      throw new Error(`account already exits ${account.name}`);
     }
     this.#accounts.push(Account.parse(account.toString()));
   }
   #updateAccount(account: Account) {
-    const index = this.#accounts.findIndex((e) => e.id === account.id);
+    const index = this.#accounts.findIndex((e) => e.name === account.name);
     if (index === -1) {
-      throw new Error(`account not found ${account.id}`);
+      throw new Error(`account not found ${account.name}`);
     }
     this.#accounts[index] = Account.parse(account.toString());
   }
   #removeAccount(id: string) {
-    const index = this.#accounts.findIndex((e) => e.id === id);
+    const index = this.#accounts.findIndex((e) => e.name === id);
     if (index === -1) {
       throw new Error(`account not found ${id}`);
     }
@@ -159,7 +159,7 @@ export class Wallet {
     data: Buffer,
     signature: Buffer,
   ) {
-    const index = this.#accounts.findIndex((e) => e.id === id);
+    const index = this.#accounts.findIndex((e) => e.name === id);
     if (index === -1) {
       throw new Error(`account not found ${id}`);
     }

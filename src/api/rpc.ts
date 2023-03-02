@@ -1,7 +1,7 @@
-import axios, { AxiosRequestConfig } from 'axios';
 import { EventEmitter } from 'events';
 import StrictEventEmitter from 'strict-event-emitter-types';
 import { ReadStream } from 'tty';
+import { HTTPProvider } from './http-provider';
 import {
   NodeInfo,
   ChainInfo,
@@ -10,207 +10,63 @@ import {
   AccountInfo,
   RAMInfo,
 } from '../data/info';
-import { AmountLimit } from '../data/params';
 import { TxInfo, TxReceiptInfo } from '../data/info';
 import { Transaction } from '../transaction/transaction';
+import { RPCResponse, Params } from '../data';
+import { RPCAdapter } from '../iwallet/iwallet-adapter';
 
-export type TransactionPending = {
-  hash: string;
-  pre_tx_receipt: TxReceiptInfo | null;
-};
-export type TokenBalance = {
-  balance: number;
-  frozen_balances: {
-    amount: number;
-    time: string;
-  }[];
-};
-export type Token721Balance = {
-  balance: string;
-  tokenIDs: string[];
-};
-export type Token721Metadata = {
-  metadata: string;
-};
-export type Token721Owner = {
-  owner: string;
-};
-export type Contract = {
-  id: string;
-  code: string;
-  language: string;
-  version: string;
-  abis: {
-    name: string;
-    args: string[];
-    amount_limit: AmountLimit[];
-  }[];
-};
-export type ContractStorage = {
-  data: string;
-  block_hash: string;
-  block_number: string;
-};
-export type ContractStorageFields = {
-  fields: string[];
-  block_hash: string;
-  block_number: string;
-};
-export type ContractStorages = {
-  datas: string[];
-  block_hash: string;
-  block_number: string;
-};
-export type ContractStorageList = {
-  datas: { key: string; value: string }[];
-  block_hash: string;
-  block_number: string;
-};
-
-export type SubscribeEventType = 'CONTRACT_EVENT' | 'CONTRACT_RECEIPT';
-export type SubscribeEvent = {
-  messages: (messages: Subscribe[]) => void;
-};
-export type Subscribe = {
-  result: {
-    event: {
-      topic: SubscribeEventType;
-      data: string;
-      time: string;
-    };
-  };
-};
-export type GasRation = {
-  lowest_gas_ratio: number;
-  median_gas_ratio: number;
-};
-export type CandidateBonus = {
-  bonus: string;
-};
-export type VoterBonus = {
-  bonus: number;
-  detail: {
-    dapppub: number;
-    iostamerica: number;
-    laomao: number;
-    metanyx: number;
-    sutler: number;
-    tokenpocket: number;
-  };
-};
-
-export class RPC {
-  readonly #host: string;
-  constructor(host: string) {
-    this.#host = host;
-  }
-  async #get<ResponseType>(url: string) {
-    try {
-      const res = await axios<ResponseType>({
-        method: 'get',
-        baseURL: this.#host,
-        url,
-        headers: {
-          'Content-Type': 'text/plain',
-        },
-      });
-      return res.data;
-    } catch (error: any) {
-      if (error.response) {
-        throw new Error(`${JSON.stringify(error.response.data)}`);
-      } else {
-        throw new Error(error.message);
-      }
-    }
-  }
-  async #post<ResponseType>(url: string, data: AxiosRequestConfig['data']) {
-    try {
-      const res = await axios<ResponseType>({
-        method: 'post',
-        baseURL: this.#host,
-        url,
-        data,
-        headers: {
-          'Content-Type': 'text/plain',
-        },
-      });
-      return res.data;
-    } catch (error: any) {
-      if (error.response) {
-        throw new Error(`${JSON.stringify(error.response.data)}`);
-      } else {
-        throw new Error(error.message);
-      }
-    }
-  }
-  async #stream<ResponseType>(url: string, data: any) {
-    try {
-      const res = await axios<ResponseType>({
-        method: 'post',
-        baseURL: this.#host,
-        url,
-        data,
-        headers: {
-          'Content-Type': 'text/plain',
-        },
-        responseType: 'stream',
-      });
-      return res.data;
-    } catch (error: any) {
-      if (error.response) {
-        throw new Error(`${JSON.stringify(error.response.data)}`);
-      } else {
-        throw new Error(error.message);
-      }
-    }
+export class RPC extends RPCAdapter {
+  public readonly _provider: HTTPProvider;
+  constructor(provider: HTTPProvider) {
+    super(provider);
   }
   async getNodeInfo() {
     const url = 'getNodeInfo';
-    return await this.#get<NodeInfo>(url);
+    return await this._provider.get<NodeInfo>(url);
   }
   async getChainInfo() {
     const url = 'getChainInfo';
-    return await this.#get<ChainInfo>(url);
+    return await this._provider.get<ChainInfo>(url);
   }
   async getGasRatio() {
     const url = 'getGasRatio';
-    return await this.#get<GasRation>(url);
+    return await this._provider.get<RPCResponse.GasRation>(url);
   }
   async getRAMInfo() {
     const url = 'getRAMInfo';
-    return await this.#get<RAMInfo>(url);
+    return await this._provider.get<RAMInfo>(url);
   }
   async getTxByHash(hash: string) {
     const url = `getTxByHash/${hash}`;
-    return await this.#get<TxInfo>(url);
+    return await this._provider.get<TxInfo>(url);
   }
   async getTxReceiptByTxHash(hash: string) {
     const url = `getTxReceiptByTxHash/${hash}`;
-    return await this.#get<TxReceiptInfo>(url);
+    return await this._provider.get<TxReceiptInfo>(url);
   }
   async getBlockByHash(hash: string) {
     const url = `getBlockByHash/${hash}/true`;
-    return await this.#get<BlockInfo>(url);
+    return await this._provider.get<BlockInfo>(url);
   }
   async getBlockByNumber(num: number) {
     const url = `getBlockByNumber/${num}/true`;
-    return await this.#get<BlockInfo>(url);
+    return await this._provider.get<BlockInfo>(url);
   }
   async getAccount(id: string, byLongestChain = true) {
     const url = `getAccount/${id}/${byLongestChain}`;
-    return await this.#get<AccountInfo>(url);
+    return await this._provider.get<AccountInfo>(url);
   }
   async getBalance(address: string, symbol = 'iost', byLongestChain = true) {
     const url = `getTokenBalance/${address}/${symbol}/${byLongestChain}`;
-    return await this.#get<TokenBalance>(url);
+    return await this._provider.get<RPCResponse.TokenBalance>(url);
   }
   async getProducerVoteInfo(id: string, byLongestChain = true) {
     const url = `getProducerVoteInfo/${id}/${byLongestChain}`;
-    return await this.#get<Contract>(url);
+    return await this._provider.get<RPCResponse.Contract>(url);
   }
   async getContract(id: string, byLongestChain = true) {
     const url = `getContract/${id}/${byLongestChain}`;
-    return await this.#get<Contract>(url);
+    return await this._provider.get<RPCResponse.Contract>(url);
   }
   async getContractStorage(
     id: string,
@@ -225,7 +81,7 @@ export class RPC {
       field: field || '',
       by_longest_chain: byLongestChain,
     };
-    return await this.#post<ContractStorage>(url, data);
+    return await this._provider.post<RPCResponse.ContractStorage>(url, data);
   }
   async getContractStorageFields(
     id: string,
@@ -238,7 +94,10 @@ export class RPC {
       key,
       by_longest_chain: byLongestChain,
     };
-    return await this.#post<ContractStorageFields>(url, data);
+    return await this._provider.post<RPCResponse.ContractStorageFields>(
+      url,
+      data,
+    );
   }
   async getBatchContractStorage(
     id: string,
@@ -262,29 +121,34 @@ export class RPC {
     }
     const url = 'getBatchContractStorage';
     const res = await Promise.all(
-      chunkedQuery.map((query) => this.#post<ContractStorages>(url, query)),
+      chunkedQuery.map((query) =>
+        this._provider.post<RPCResponse.ContractStorages>(url, query),
+      ),
     );
     return res;
   }
   async sendTx(tx: Transaction) {
     const url = 'sendTx';
-    return await this.#post<TransactionPending>(url, tx.toString());
+    return await this._provider.post<RPCResponse.TransactionPending>(
+      url,
+      tx.toString(),
+    );
   }
   async execTx(tx: Transaction) {
     const url = 'execTx';
-    return await this.#post<TxReceiptInfo>(url, tx.toString());
+    return await this._provider.post<TxReceiptInfo>(url, tx.toString());
   }
-  subscribe(topics: SubscribeEventType[], contract: string) {
+  subscribe(topics: Params.SubscribeEventType[], contract: string) {
     const url = 'subscribe';
     const data = {
       topics,
       filter: { contract_id: contract },
     };
-    const event: StrictEventEmitter<EventEmitter, SubscribeEvent> =
+    const event: StrictEventEmitter<EventEmitter, Params.SubscribeEvent> =
       new EventEmitter();
-    this.#stream<ReadStream>(url, data).then(async (readable) => {
+    this._provider.stream<ReadStream>(url, data).then(async (readable) => {
       for await (const chunk of readable) {
-        const messages: Subscribe[] = Buffer.from(chunk)
+        const messages: Params.Subscribe[] = Buffer.from(chunk)
           .toString('utf-8')
           .split('\n')
           .filter((data) => data !== '')
@@ -296,15 +160,15 @@ export class RPC {
   }
   async getCandidateBonus(name: string, byLongestChain = true) {
     const url = `getCandidateBonus/${name}/${byLongestChain}`;
-    return await this.#get<CandidateBonus>(url);
+    return await this._provider.get<RPCResponse.CandidateBonus>(url);
   }
   async getVoterBonus(name: string, byLongestChain = true) {
     const url = `getVoterBonus/${name}/${byLongestChain}`;
-    return await this.#get<VoterBonus>(url);
+    return await this._provider.get<RPCResponse.VoterBonus>(url);
   }
   async getTokenInfo(symbol: string, byLongestChain = true) {
     const url = `getTokenInfo/${symbol}/${byLongestChain}`;
-    return await this.#get<TokenInfo>(url);
+    return await this._provider.get<TokenInfo>(url);
   }
   /* 非公式API */
   // async getToken721Balance(
@@ -337,7 +201,7 @@ export class RPC {
     byLongestChain = true,
   ) {
     const url = `listContractStorage`;
-    return await this.#post<ContractStorageList>(url, {
+    return await this._provider.post<RPCResponse.ContractStorageList>(url, {
       id: contract,
       limit,
       by_longest_cahin: byLongestChain,
@@ -349,7 +213,7 @@ export class RPC {
     byLongestChain = true,
   ) {
     const url = `listContractStorage`;
-    return await this.#post<ContractStorageList>(url, {
+    return await this._provider.post<RPCResponse.ContractStorageList>(url, {
       id: contract,
       limit,
       storageType: 'MAP',
@@ -363,7 +227,7 @@ export class RPC {
     byLongestChain = true,
   ) {
     const url = `listContractStorage`;
-    return await this.#post<ContractStorageList>(url, {
+    return await this._provider.post<RPCResponse.ContractStorageList>(url, {
       id: contract,
       limit,
       prefix,
@@ -378,7 +242,7 @@ export class RPC {
     byLongestChain = true,
   ) {
     const url = `listContractStorage`;
-    return await this.#post<ContractStorageList>(url, {
+    return await this._provider.post<RPCResponse.ContractStorageList>(url, {
       id: contract,
       limit,
       from: range.from,

@@ -1,4 +1,9 @@
 /// <reference types="node" />
+export type SignatureStruct = {
+    algorithm: string;
+    public_key: string;
+    signature: string;
+};
 export declare class Signature {
     #private;
     get name(): string;
@@ -7,9 +12,5 @@ export declare class Signature {
     get sig(): Buffer;
     constructor(type: number, name: string, pubkey: Buffer, sig: Buffer);
     toBuffer(): Buffer;
-    toJSON(): {
-        algorithm: string;
-        public_key: string;
-        signature: string;
-    };
+    toJSON(): SignatureStruct;
 }

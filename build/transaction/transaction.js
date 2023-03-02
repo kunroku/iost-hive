@@ -132,22 +132,25 @@ class Transaction {
         }
         return c.toBuffer();
     }
-    toString() {
-        return JSON.stringify({
-            amount_limit: __classPrivateFieldGet(this, _Transaction_amount_limit, "f"),
+    toJSON() {
+        return {
+            amount_limit: __classPrivateFieldGet(this, _Transaction_amount_limit, "f").map((e) => (Object.assign({}, e))),
             chain_id: __classPrivateFieldGet(this, _Transaction_chainId, "f"),
             gasLimit: __classPrivateFieldGet(this, _Transaction_gasLimit, "f"),
             gasRatio: __classPrivateFieldGet(this, _Transaction_gasRatio, "f"),
-            actions: __classPrivateFieldGet(this, _Transaction_actions, "f"),
+            actions: __classPrivateFieldGet(this, _Transaction_actions, "f").map((e) => (Object.assign({}, e))),
             publisher: __classPrivateFieldGet(this, _Transaction_publisher, "f"),
-            publisher_sigs: __classPrivateFieldGet(this, _Transaction_publisher_sigs, "f"),
-            signers: __classPrivateFieldGet(this, _Transaction_signers, "f"),
-            signatures: __classPrivateFieldGet(this, _Transaction_signatures, "f"),
+            publisher_sigs: __classPrivateFieldGet(this, _Transaction_publisher_sigs, "f").map((e) => e.toJSON()),
+            signers: [...__classPrivateFieldGet(this, _Transaction_signers, "f")],
+            signatures: __classPrivateFieldGet(this, _Transaction_signatures, "f").map((e) => e.toJSON()),
             reserved: __classPrivateFieldGet(this, _Transaction_reserved, "f"),
             time: __classPrivateFieldGet(this, _Transaction_time, "f"),
             expiration: __classPrivateFieldGet(this, _Transaction_expiration, "f"),
             delay: __classPrivateFieldGet(this, _Transaction_delay, "f"),
-        });
+        };
+    }
+    toString() {
+        return JSON.stringify(this.toJSON());
     }
 }
 exports.Transaction = Transaction;

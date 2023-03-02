@@ -1,8 +1,8 @@
 /// <reference types="node" />
 import { EventEmitter } from 'events';
 import StrictEventEmitter from 'strict-event-emitter-types';
-import { TransactionPending } from '../api';
 import { TxInfo } from '../data/info';
+import { TransactionPending } from '../data/rpc-resopnse';
 import { Transaction } from './transaction';
 export type TransactionHandlerConfig = {
     interval: number;

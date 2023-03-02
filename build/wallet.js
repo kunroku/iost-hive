@@ -55,7 +55,7 @@ exports.ConstantWalletRequestHandler = ConstantWalletRequestHandler;
 _ConstantWalletRequestHandler_requireSign = new WeakMap(), _ConstantWalletRequestHandler_requireAddAccount = new WeakMap(), _ConstantWalletRequestHandler_requireUpdateAccount = new WeakMap(), _ConstantWalletRequestHandler_requireRemoveAccount = new WeakMap(), _ConstantWalletRequestHandler_requireUpdatePassword = new WeakMap();
 class Wallet {
     get accounts() {
-        return __classPrivateFieldGet(this, _Wallet_accounts, "f").map((acc) => acc.id);
+        return __classPrivateFieldGet(this, _Wallet_accounts, "f").map((acc) => acc.name);
     }
     constructor(accounts, password, walletRequestHandler) {
         _Wallet_instances.add(this);
@@ -99,7 +99,7 @@ class Wallet {
         }
     }
     verify(id, permission, data, signature) {
-        const index = __classPrivateFieldGet(this, _Wallet_accounts, "f").findIndex((e) => e.id === id);
+        const index = __classPrivateFieldGet(this, _Wallet_accounts, "f").findIndex((e) => e.name === id);
         if (index === -1) {
             throw new Error(`account not found ${id}`);
         }
@@ -132,25 +132,25 @@ class Wallet {
 }
 exports.Wallet = Wallet;
 _Wallet_accounts = new WeakMap(), _Wallet_password = new WeakMap(), _Wallet_walletRequestHandler = new WeakMap(), _Wallet_instances = new WeakSet(), _Wallet_sign = function _Wallet_sign(id, permission, data) {
-    const account = __classPrivateFieldGet(this, _Wallet_accounts, "f").find((e) => e.id === id);
+    const account = __classPrivateFieldGet(this, _Wallet_accounts, "f").find((e) => e.name === id);
     if (!account) {
         throw new Error(`account not found ${id}`);
     }
     return account.sign(permission, data);
 }, _Wallet_addAccount = function _Wallet_addAccount(account) {
-    const index = __classPrivateFieldGet(this, _Wallet_accounts, "f").findIndex((e) => e.id === account.id);
+    const index = __classPrivateFieldGet(this, _Wallet_accounts, "f").findIndex((e) => e.name === account.name);
     if (index !== -1) {
-        throw new Error(`account already exits ${account.id}`);
+        throw new Error(`account already exits ${account.name}`);
     }
     __classPrivateFieldGet(this, _Wallet_accounts, "f").push(account_1.Account.parse(account.toString()));
 }, _Wallet_updateAccount = function _Wallet_updateAccount(account) {
-    const index = __classPrivateFieldGet(this, _Wallet_accounts, "f").findIndex((e) => e.id === account.id);
+    const index = __classPrivateFieldGet(this, _Wallet_accounts, "f").findIndex((e) => e.name === account.name);
     if (index === -1) {
-        throw new Error(`account not found ${account.id}`);
+        throw new Error(`account not found ${account.name}`);
     }
     __classPrivateFieldGet(this, _Wallet_accounts, "f")[index] = account_1.Account.parse(account.toString());
 }, _Wallet_removeAccount = function _Wallet_removeAccount(id) {
-    const index = __classPrivateFieldGet(this, _Wallet_accounts, "f").findIndex((e) => e.id === id);
+    const index = __classPrivateFieldGet(this, _Wallet_accounts, "f").findIndex((e) => e.name === id);
     if (index === -1) {
         throw new Error(`account not found ${id}`);
     }

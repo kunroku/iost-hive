@@ -1,140 +1,16 @@
 import { EventEmitter } from 'events';
 import StrictEventEmitter from 'strict-event-emitter-types';
+import { Account } from '../account';
+import { HTTPProvider, RPC } from '../api';
 import { TxReceiptInfo } from '../data/info';
-import { IOSTConfig, TransactionArgumentType } from '../data/params';
-import { Transaction } from '../transaction';
-
-export type Network = 'MAINNET' | 'TESTNET' | 'LOCALNET';
-
-class Callback {
-  on: (msg: string, func: (res: any) => void) => Callback;
-}
-type IWalletSignAndSend = (tx: Transaction) => Callback;
-type IWalletSignMessage = (message: string) => Callback;
-type IOSTAdapterConfig = {
-  gasPrice: number;
-  gasLimit: number;
-  delay: number;
-};
-type HTTPProviderAdapter = {
-  _host: string;
-};
-type RPCAdapter = {
-  _provider: HTTPProviderAdapter;
-};
-type IOSTAdapter = {
-  signAndSend: IWalletSignAndSend;
-  signMessage: IWalletSignMessage;
-  rpc: RPCAdapter;
-  account: IWalletAccount;
-  host: string;
-  chainId: number;
-  setRPC(rpc: RPCAdapter): void;
-  currentRPC: RPCAdapter;
-  setAccount(account: IWalletAccount): void;
-  callABI(contract: string, abi: string, args: TransactionArgumentType[]): any;
-};
-
-class IWalletAdapterPack {
-  static #host: string;
-  static #chainId: number;
-  static get IOST() {
-    return class IOST implements IOSTAdapter {
-      signAndSend: IWalletSignAndSend;
-      signMessage: IWalletSignMessage;
-      rpc: RPCAdapter;
-      account: IWalletAccount;
-      get host() {
-        return IWalletAdapterPack.#host;
-      }
-      get chainId() {
-        return IWalletAdapterPack.#chainId;
-      }
-      constructor(public config: IOSTAdapterConfig) {}
-      setRPC(rpc: RPCAdapter) {
-        this.rpc = rpc;
-      }
-      get currentRPC() {
-        return this.rpc;
-      }
-      setAccount(account: IWalletAccount) {
-        this.account = account;
-      }
-      callABI(contract: string, abi: string, args: TransactionArgumentType[]) {
-        const tx = new Transaction({
-          chainId: IWalletAdapterPack.#chainId,
-          gasLimit: this.config.gasLimit,
-        });
-        tx.addAction(contract, abi, args);
-        return JSON.parse(tx.toString());
-      }
-    };
-  }
-  static get HTTPProvider() {
-    return class HTTPProvider implements HTTPProviderAdapter {
-      constructor(public _host: string) {
-        IWalletAdapterPack.#host = _host;
-      }
-    };
-  }
-  static get RPC() {
-    return class RPC {
-      constructor(public _provider: HTTPProviderAdapter) {
-        IWalletAdapterPack.#host = _provider._host;
-      }
-    };
-  }
-  static get Account() {
-    return class Account implements IWalletAccount {
-      name: string;
-      network: Network;
-      constructor(name: string, network: Network) {
-        if (typeof name === 'string') {
-          this.name = name;
-          if (network) {
-            this.network = network;
-          } else {
-            this.network = getIwalletJS().network;
-          }
-        } else {
-          this.name = null;
-          this.network = null;
-        }
-        IWalletAdapterPack.#chainId =
-          this.network === 'LOCALNET'
-            ? 1020
-            : this.network === 'TESTNET'
-            ? 1023
-            : this.network === 'MAINNET'
-            ? 1024
-            : 0;
-      }
-    };
-  }
-}
-
-export type IWalletAccount = {
-  name: string;
-  network: Network;
-};
-
-type IWalletExtension = {
-  account: IWalletAccount;
-  enable: () => Promise<string>;
-  IOST: IOSTAdapter;
-  network: Network;
-  newIOST: (pack: IWalletAdapterPack) => IOSTAdapter;
-  rpc: RPCAdapter;
-  setAccount: (param: IWalletAccount) => void;
-};
-
-const getIwalletJS = () => window['IWalletJS'] as IWalletExtension | undefined;
-
-type IWalletTransactionEvents = {
-  pending: (tx_hash: string) => void;
-  success: (res: TxReceiptInfo) => void;
-  failed: (error: { message: string }) => void;
-};
+import { IOSTConfig } from '../data/params';
+import { Transaction } from '../transaction/transaction';
+import { AccountAdapter, IOSTAdapter } from './iwallet-adapter';
+import {
+  getIwalletJS,
+  IWalletAdapterPackType,
+  IWalletExtension,
+} from './iwallet-extension';
 
 export type IWalletSignature = {
   algorithm: string;
@@ -143,12 +19,23 @@ export type IWalletSignature = {
   message: string;
 };
 
-type IWalletSignEvents = {
+export type IWalletTransactionEvents = {
+  pending: (tx_hash: string) => void;
+  success: (res: TxReceiptInfo) => void;
+  failed: (error: { message: string }) => void;
+};
+
+export type IWalletSignEvents = {
   pending: () => void;
   success: (res: IWalletSignature) => void;
   failed: (error: { message: string }) => void;
 };
-
+export const IWALLET_ADAPTER_PACK: IWalletAdapterPackType = {
+  IOST: IOSTAdapter,
+  HTTPProvider: HTTPProvider,
+  RPC: RPC,
+  Account: Account,
+};
 export class IWallet implements IOSTConfig {
   static #instance: IWallet;
   get host() {
@@ -159,13 +46,13 @@ export class IWallet implements IOSTConfig {
   }
   #extension: IWalletExtension;
   get #adapter() {
-    return this.#extension.newIOST(IWalletAdapterPack);
+    return this.#extension.newIOST(IWALLET_ADAPTER_PACK) as IOSTAdapter;
   }
   get account() {
-    return { ...this.#adapter.account };
+    return this.#adapter.account;
   }
-  set account(account: IWalletAccount) {
-    this.#extension.setAccount({ ...account });
+  set account(account: AccountAdapter) {
+    this.#extension.setAccount(account);
   }
   private constructor(extension: IWalletExtension) {
     this.#extension = extension;
@@ -225,7 +112,7 @@ export class IWallet implements IOSTConfig {
       });
     });
   }
-  setAccount(account: IWalletAccount) {
+  setAccount(account: Account) {
     this.account = account;
   }
 }

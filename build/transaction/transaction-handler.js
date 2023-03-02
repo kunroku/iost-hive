@@ -28,7 +28,7 @@ class TransactionHandler {
         _TransactionHandler_config.set(this, void 0);
         _TransactionHandler_status.set(this, 'idle');
         __classPrivateFieldSet(this, _TransactionHandler_tx, tx, "f");
-        __classPrivateFieldSet(this, _TransactionHandler_rpc, new api_1.RPC(host), "f");
+        __classPrivateFieldSet(this, _TransactionHandler_rpc, new api_1.RPC(new api_1.HTTPProvider(host)), "f");
         __classPrivateFieldSet(this, _TransactionHandler_config, Object.assign(Object.assign({}, defaultTransactionConfig), config), "f");
     }
     send() {

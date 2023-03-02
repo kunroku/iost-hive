@@ -1,5 +1,11 @@
 import { Codec } from './codec';
 
+export type SignatureStruct = {
+  algorithm: string;
+  public_key: string;
+  signature: string;
+};
+
 export class Signature {
   readonly #name: string;
   readonly #type: number;
@@ -30,7 +36,7 @@ export class Signature {
     c.pushBytes(this.pubkey);
     return c.toBuffer();
   }
-  toJSON() {
+  toJSON(): SignatureStruct {
     return {
       algorithm: this.name,
       public_key: this.#pubkey,
