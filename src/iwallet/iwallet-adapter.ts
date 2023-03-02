@@ -5,6 +5,7 @@ import {
   AbstractHTTPProviderAdapter,
   AbstractIOSTAdapter,
   AbstractRPCAdapter,
+  Callback,
   getIwalletJS,
 } from './iwallet-extension';
 
@@ -21,10 +22,6 @@ export class RPCAdapter extends AbstractRPCAdapter {
     super(_provider);
   }
 }
-class Callback {
-  on: (msg: string, func: (res: any) => void) => Callback;
-}
-
 export type IWalletSignAndSend = (tx: Transaction) => Callback;
 export type IWalletSignMessage = (message: string) => Callback;
 export type IOSTAdapterConfig = {

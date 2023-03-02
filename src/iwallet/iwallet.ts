@@ -26,7 +26,6 @@ export type IWalletTransactionEvents = {
 };
 
 export type IWalletSignEvents = {
-  pending: () => void;
   success: (res: IWalletSignature) => void;
   failed: (error: { message: string }) => void;
 };
@@ -96,7 +95,6 @@ export class IWallet implements IOSTConfig {
     const event: StrictEventEmitter<EventEmitter, IWalletSignEvents> =
       new EventEmitter();
     const handler = this.#adapter.signMessage(message);
-    handler.on('pending', () => event.emit('pending'));
     handler.on('success', (res) => event.emit('success', res));
     handler.on('failed', (res) => event.emit('failed', res));
     return event;

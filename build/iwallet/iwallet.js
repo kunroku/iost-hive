@@ -80,7 +80,6 @@ class IWallet {
     signMessage(message) {
         const event = new events_1.EventEmitter();
         const handler = __classPrivateFieldGet(this, _IWallet_instances, "a", _IWallet_adapter_get).signMessage(message);
-        handler.on('pending', () => event.emit('pending'));
         handler.on('success', (res) => event.emit('success', res));
         handler.on('failed', (res) => event.emit('failed', res));
         return event;

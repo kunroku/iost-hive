@@ -21,7 +21,6 @@ export type IWalletTransactionEvents = {
     }) => void;
 };
 export type IWalletSignEvents = {
-    pending: () => void;
     success: (res: IWalletSignature) => void;
     failed: (error: {
         message: string;

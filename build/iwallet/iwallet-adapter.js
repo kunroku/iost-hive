@@ -19,8 +19,6 @@ class RPCAdapter extends iwallet_extension_1.AbstractRPCAdapter {
     }
 }
 exports.RPCAdapter = RPCAdapter;
-class Callback {
-}
 class IOSTAdapter extends iwallet_extension_1.AbstractIOSTAdapter {
     get network() {
         return (0, iwallet_extension_1.getIwalletJS)().network;
