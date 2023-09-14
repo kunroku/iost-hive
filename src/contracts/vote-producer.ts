@@ -1,6 +1,6 @@
-import { OfficialContract } from './official-contract';
+import { ContractInterface } from './contract-interface';
 
-export class VoteProducerContract extends OfficialContract {
+export class VoteProducerContract extends ContractInterface {
   get id() {
     return 'vote_producer.iost';
   }

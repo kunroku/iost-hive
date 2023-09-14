@@ -2,7 +2,7 @@ export * from './auth';
 export * from './bonus';
 export * from './exchange';
 export * from './gas';
-export * from './official-contract';
+export * from './contract-interface';
 export * from './official-contracts';
 export * from './ram';
 export * from './system';

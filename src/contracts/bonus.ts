@@ -1,6 +1,6 @@
-import { OfficialContract } from './official-contract';
+import { ContractInterface } from './contract-interface';
 
-export class BonusContract extends OfficialContract {
+export class BonusContract extends ContractInterface {
   get id() {
     return 'bonus.iost';
   }

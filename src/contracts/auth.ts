@@ -1,7 +1,7 @@
 import { KeyPairPermission } from '../data/params';
-import { OfficialContract } from './official-contract';
+import { ContractInterface } from './contract-interface';
 
-export class AuthContract extends OfficialContract {
+export class AuthContract extends ContractInterface {
   get id() {
     return 'auth.iost';
   }

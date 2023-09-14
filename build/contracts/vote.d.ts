@@ -1,4 +1,4 @@
-import { OfficialContract } from './official-contract';
+import { ContractInterface } from './contract-interface';
 export type VoteInfo = {
     resultNumber?: number;
     minVote?: number;
@@ -7,7 +7,7 @@ export type VoteInfo = {
     anyOption?: boolean;
     freezeTime?: number;
 };
-export declare class VoteContract extends OfficialContract {
+export declare class VoteContract extends ContractInterface {
     get id(): string;
     newVote(owner: string, description: string, info: VoteInfo): void;
     setCanVote(voteId: string, canVote: boolean): void;

@@ -1,6 +1,6 @@
 import { ContractABI } from '../utils/contract-abi';
-import { OfficialContract } from './official-contract';
-export declare class SystemContract extends OfficialContract {
+import { ContractInterface } from './contract-interface';
+export declare class SystemContract extends ContractInterface {
     get id(): string;
     setCode(source: string, abi: ContractABI): void;
     updateCode(source: string, abi: ContractABI, contractId: string): void;

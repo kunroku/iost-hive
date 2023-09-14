@@ -1,6 +1,6 @@
 import { KeyPairPermission } from '../data/params';
-import { OfficialContract } from './official-contract';
-export declare class AuthContract extends OfficialContract {
+import { ContractInterface } from './contract-interface';
+export declare class AuthContract extends ContractInterface {
     get id(): string;
     addPermission(id: string, permision: KeyPairPermission, threshold: number): void;
     dropPermission(id: string, permision: KeyPairPermission): void;

@@ -1,5 +1,5 @@
-import { OfficialContract } from './official-contract';
-export declare class RAMContract extends OfficialContract {
+import { ContractInterface } from './contract-interface';
+export declare class RAMContract extends ContractInterface {
     get id(): string;
     buy(payer: string, receiver: string, amount: string): void;
     sell(seller: string, receiver: string, amount: string): void;

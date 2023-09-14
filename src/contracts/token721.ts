@@ -1,6 +1,6 @@
-import { OfficialContract } from './official-contract';
+import { ContractInterface } from './contract-interface';
 
-export class Token721Contract extends OfficialContract {
+export class Token721Contract extends ContractInterface {
   get id() {
     return 'token721.iost';
   }

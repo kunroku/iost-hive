@@ -1,4 +1,4 @@
-import { OfficialContract } from './official-contract';
+import { ContractInterface } from './contract-interface';
 
 export type TokenCreateConfig = {
   decimal: number;
@@ -6,7 +6,7 @@ export type TokenCreateConfig = {
   fullName: string;
 };
 
-export class TokenContract extends OfficialContract {
+export class TokenContract extends ContractInterface {
   get id() {
     return 'token.iost';
   }

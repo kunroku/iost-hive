@@ -1,7 +1,7 @@
 import { ContractABI } from '../utils/contract-abi';
-import { OfficialContract } from './official-contract';
+import { ContractInterface } from './contract-interface';
 
-export class SystemContract extends OfficialContract {
+export class SystemContract extends ContractInterface {
   get id() {
     return 'system.iost';
   }

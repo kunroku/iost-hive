@@ -1,4 +1,4 @@
-import { OfficialContract } from './official-contract';
+import { ContractInterface } from './contract-interface';
 
 export type VoteInfo = {
   resultNumber?: number;
@@ -9,7 +9,7 @@ export type VoteInfo = {
   freezeTime?: number;
 };
 
-export class VoteContract extends OfficialContract {
+export class VoteContract extends ContractInterface {
   get id() {
     return 'vote.iost';
   }

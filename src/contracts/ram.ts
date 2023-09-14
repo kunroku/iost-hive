@@ -1,6 +1,6 @@
-import { OfficialContract } from './official-contract';
+import { ContractInterface } from './contract-interface';
 
-export class RAMContract extends OfficialContract {
+export class RAMContract extends ContractInterface {
   get id() {
     return 'ram.iost';
   }

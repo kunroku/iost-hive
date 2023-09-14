@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TokenContract = void 0;
-const official_contract_1 = require("./official-contract");
-class TokenContract extends official_contract_1.OfficialContract {
+const contract_interface_1 = require("./contract-interface");
+class TokenContract extends contract_interface_1.ContractInterface {
     get id() {
         return 'token.iost';
     }

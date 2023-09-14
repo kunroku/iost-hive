@@ -1,5 +1,5 @@
-import { OfficialContract } from './official-contract';
-export declare class VoteProducerContract extends OfficialContract {
+import { ContractInterface } from './contract-interface';
+export declare class VoteProducerContract extends ContractInterface {
     get id(): string;
     initProducer(proID: string, proPubkey: string): void;
     initAdmin(adminID: string): void;

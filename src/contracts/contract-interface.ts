@@ -1,7 +1,7 @@
 import { TransactionArgumentType } from '../data/params';
 import { Transaction } from '../transaction/transaction';
 
-export abstract class OfficialContract {
+export abstract class ContractInterface {
   protected abstract readonly id: string;
   readonly #tx: Transaction;
   constructor(tx: Transaction) {

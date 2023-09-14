@@ -1,6 +1,6 @@
-import { OfficialContract } from './official-contract';
+import { ContractInterface } from './contract-interface';
 
-export class GASContract extends OfficialContract {
+export class GASContract extends ContractInterface {
   get id() {
     return 'gas.iost';
   }

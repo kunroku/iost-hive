@@ -18,7 +18,7 @@ __exportStar(require("./auth"), exports);
 __exportStar(require("./bonus"), exports);
 __exportStar(require("./exchange"), exports);
 __exportStar(require("./gas"), exports);
-__exportStar(require("./official-contract"), exports);
+__exportStar(require("./contract-interface"), exports);
 __exportStar(require("./official-contracts"), exports);
 __exportStar(require("./ram"), exports);
 __exportStar(require("./system"), exports);

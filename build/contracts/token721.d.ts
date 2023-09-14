@@ -1,5 +1,5 @@
-import { OfficialContract } from './official-contract';
-export declare class Token721Contract extends OfficialContract {
+import { ContractInterface } from './contract-interface';
+export declare class Token721Contract extends ContractInterface {
     get id(): string;
     create(symbol: string, issuer: string, totalSupply: number): void;
     issue(symbol: string, to: string, metadata: string): void;
