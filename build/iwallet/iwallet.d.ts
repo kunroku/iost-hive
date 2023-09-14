@@ -30,7 +30,7 @@ export declare const IWALLET_ADAPTER_PACK: IWalletAdapterPackType;
 export declare class IWallet implements IOSTConfig {
     #private;
     get host(): string;
-    get chainId(): 1024 | 0 | 1020 | 1023;
+    get chainId(): 1020 | 0 | 1023 | 1024;
     get account(): AccountAdapter;
     set account(account: AccountAdapter);
     private constructor();

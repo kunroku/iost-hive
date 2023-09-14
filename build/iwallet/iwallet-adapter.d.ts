@@ -23,7 +23,7 @@ export declare class IOSTAdapter extends AbstractIOSTAdapter implements IOSTConf
     rpc: RPCAdapter;
     account: AccountAdapter;
     get network(): import("../data/params").Network;
-    get chainId(): 1024 | 0 | 1020 | 1023;
+    get chainId(): 1020 | 0 | 1023 | 1024;
     get host(): string;
     setRPC(rpc: RPCAdapter): void;
     get currentRPC(): RPCAdapter;

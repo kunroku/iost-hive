@@ -19,7 +19,7 @@ const transaction_handler_1 = require("./transaction/transaction-handler");
 const iwallet_1 = require("./iwallet");
 const defaultConfig = {
     host: 'http://localhost:30001',
-    chainId: 1024,
+    chainId: 1020,
 };
 class IOST {
     get config() {
