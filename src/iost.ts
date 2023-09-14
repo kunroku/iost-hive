@@ -10,7 +10,7 @@ import { IWallet } from './iwallet';
 
 const defaultConfig: IOSTConfig = {
   host: 'http://localhost:30001',
-  chainId: 1024,
+  chainId: 1020,
 };
 
 export class IOST {
