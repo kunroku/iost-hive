@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Secp256k1 = void 0;
+const buffer_1 = require("buffer");
 const bn_js_1 = require("bn.js");
 const elliptic_1 = require("elliptic");
 const crypto_1 = require("../crypto");
@@ -19,9 +20,9 @@ class Secp256k1 extends abstract_kp_1.AbstractKeyPair {
         if (s.gt(sig.s)) {
             s = sig.s;
         }
-        const buffer = Buffer.concat([
-            Buffer.from(r.toArray()),
-            Buffer.from(s.toArray()),
+        const buffer = buffer_1.Buffer.concat([
+            buffer_1.Buffer.from(r.toArray()),
+            buffer_1.Buffer.from(s.toArray()),
         ]);
         return new crypto_1.Signature(this.type, this.name, this.pubkey, buffer);
     }
@@ -35,11 +36,11 @@ class Secp256k1 extends abstract_kp_1.AbstractKeyPair {
     }
     static fromSecretKey(seckey) {
         const kp = secp.keyFromPrivate(seckey);
-        return new Secp256k1(Buffer.from(kp.getPublic(true, 'hex'), 'hex'), Buffer.from(kp.getPrivate('hex'), 'hex'));
+        return new Secp256k1(buffer_1.Buffer.from(kp.getPublic(true, 'hex'), 'hex'), buffer_1.Buffer.from(kp.getPrivate('hex'), 'hex'));
     }
     static randomKeyPair() {
         const kp = secp.genKeyPair();
-        return new Secp256k1(Buffer.from(kp.getPublic(true, 'hex'), 'hex'), Buffer.from(kp.getPrivate('hex'), 'hex'));
+        return new Secp256k1(buffer_1.Buffer.from(kp.getPublic(true, 'hex'), 'hex'), buffer_1.Buffer.from(kp.getPrivate('hex'), 'hex'));
     }
 }
 exports.Secp256k1 = Secp256k1;

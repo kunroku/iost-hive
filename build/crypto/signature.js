@@ -13,6 +13,7 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
 var _Signature_name, _Signature_type, _Signature_pubkey, _Signature_sig;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Signature = void 0;
+const buffer_1 = require("buffer");
 const codec_1 = require("./codec");
 class Signature {
     get name() {
@@ -22,10 +23,10 @@ class Signature {
         return __classPrivateFieldGet(this, _Signature_type, "f");
     }
     get pubkey() {
-        return Buffer.from(__classPrivateFieldGet(this, _Signature_pubkey, "f"), 'base64');
+        return buffer_1.Buffer.from(__classPrivateFieldGet(this, _Signature_pubkey, "f"), 'base64');
     }
     get sig() {
-        return Buffer.from(__classPrivateFieldGet(this, _Signature_sig, "f"), 'base64');
+        return buffer_1.Buffer.from(__classPrivateFieldGet(this, _Signature_sig, "f"), 'base64');
     }
     constructor(type, name, pubkey, sig) {
         _Signature_name.set(this, void 0);
@@ -34,8 +35,8 @@ class Signature {
         _Signature_sig.set(this, void 0);
         __classPrivateFieldSet(this, _Signature_type, type, "f");
         __classPrivateFieldSet(this, _Signature_name, name, "f");
-        __classPrivateFieldSet(this, _Signature_pubkey, Buffer.from(pubkey).toString('base64'), "f");
-        __classPrivateFieldSet(this, _Signature_sig, Buffer.from(sig).toString('base64'), "f");
+        __classPrivateFieldSet(this, _Signature_pubkey, buffer_1.Buffer.from(pubkey).toString('base64'), "f");
+        __classPrivateFieldSet(this, _Signature_sig, buffer_1.Buffer.from(sig).toString('base64'), "f");
     }
     toBuffer() {
         const c = new codec_1.Codec();

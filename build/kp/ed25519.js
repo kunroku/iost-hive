@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Ed25519 = void 0;
+const buffer_1 = require("buffer");
 const tweetnacl_1 = require("tweetnacl");
 const crypto_1 = require("../crypto");
 const abstract_kp_1 = require("./abstract-kp");
@@ -9,7 +10,7 @@ class Ed25519 extends abstract_kp_1.AbstractKeyPair {
         super(abstract_kp_1.KeyPairAlgorithm.ED25519, pubkey, seckey);
     }
     sign(data) {
-        const buffer = Buffer.from(tweetnacl_1.sign.detached(data, this.seckey));
+        const buffer = buffer_1.Buffer.from(tweetnacl_1.sign.detached(data, this.seckey));
         return new crypto_1.Signature(this.type, this.name, this.pubkey, buffer);
     }
     verify(data, signature) {
@@ -20,11 +21,11 @@ class Ed25519 extends abstract_kp_1.AbstractKeyPair {
     }
     static fromSecretKey(seckey) {
         const kp = tweetnacl_1.sign.keyPair.fromSecretKey(seckey);
-        return new Ed25519(Buffer.from(kp.publicKey), seckey);
+        return new Ed25519(buffer_1.Buffer.from(kp.publicKey), seckey);
     }
     static randomKeyPair() {
         const kp = tweetnacl_1.sign.keyPair();
-        return new Ed25519(Buffer.from(kp.publicKey), Buffer.from(kp.secretKey));
+        return new Ed25519(buffer_1.Buffer.from(kp.publicKey), buffer_1.Buffer.from(kp.secretKey));
     }
 }
 exports.Ed25519 = Ed25519;

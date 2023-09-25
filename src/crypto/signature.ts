@@ -1,3 +1,4 @@
+import { Buffer } from 'buffer';
 import { Codec } from './codec';
 
 export type SignatureStruct = {

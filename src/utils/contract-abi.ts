@@ -7,6 +7,9 @@ import {
   ModuleDeclaration,
   ClassDeclaration,
   Comment,
+  MethodDefinition,
+  PrivateIdentifier,
+  Identifier,
 } from 'estree';
 
 export type ABIArgsTypes = 'string' | 'number' | 'bool' | 'json';
@@ -47,7 +50,11 @@ export const generateContractABI = (source: string): ContractABI => {
     return stat.right.name;
   }
 
-  function generateABI(def, lastPos, comments) {
+  function generateABI(
+    def: MethodDefinition,
+    lastPos: number,
+    comments: Comment[],
+  ) {
     for (const param of def.value.params) {
       if (param.type !== 'Identifier') {
         throw new Error(
@@ -56,7 +63,7 @@ export const generateContractABI = (source: string): ContractABI => {
       }
     }
     const abi = {
-      name: def.key.name,
+      name: (def.key as PrivateIdentifier).name,
       args: new Array(def.value.params.length).fill('string'),
       amountLimit: [],
     };
@@ -65,7 +72,7 @@ export const generateContractABI = (source: string): ContractABI => {
       if (comment.range[0] > lastPos && comment.range[1] < def.range[0]) {
         for (const i in def.value.params) {
           for (const line of comment.value.split('\n')) {
-            const name = def.value.params[i].name;
+            const name = (def.value.params[i] as Identifier).name;
             const paramTypeString = /(string)/;
             const paramTypeNumber = /(number)/;
             const paramTypeBoolean = /(boolean|bool)/;
