@@ -21,6 +21,10 @@ export class Ed25519 extends AbstractKeyPair {
     const kp = sign.keyPair.fromSecretKey(seckey);
     return new Ed25519(Buffer.from(kp.publicKey), seckey);
   }
+  static fromSeed(seed: Buffer) {
+    const kp = sign.keyPair.fromSeed(seed);
+    return new Ed25519(Buffer.from(kp.publicKey), Buffer.from(kp.secretKey));
+  }
   static randomKeyPair() {
     const kp = sign.keyPair();
     return new Ed25519(Buffer.from(kp.publicKey), Buffer.from(kp.secretKey));

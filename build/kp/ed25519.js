@@ -23,6 +23,10 @@ class Ed25519 extends abstract_kp_1.AbstractKeyPair {
         const kp = tweetnacl_1.sign.keyPair.fromSecretKey(seckey);
         return new Ed25519(buffer_1.Buffer.from(kp.publicKey), seckey);
     }
+    static fromSeed(seed) {
+        const kp = tweetnacl_1.sign.keyPair.fromSeed(seed);
+        return new Ed25519(buffer_1.Buffer.from(kp.publicKey), buffer_1.Buffer.from(kp.secretKey));
+    }
     static randomKeyPair() {
         const kp = tweetnacl_1.sign.keyPair();
         return new Ed25519(buffer_1.Buffer.from(kp.publicKey), buffer_1.Buffer.from(kp.secretKey));

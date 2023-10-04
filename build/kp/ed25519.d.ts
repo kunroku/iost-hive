@@ -8,5 +8,6 @@ export declare class Ed25519 extends AbstractKeyPair {
     verify(data: Buffer, signature: Buffer): boolean;
     static fromPublicKey(pubkey: Buffer): Ed25519;
     static fromSecretKey(seckey: Buffer): Ed25519;
+    static fromSeed(seed: Buffer): Ed25519;
     static randomKeyPair(): Ed25519;
 }
