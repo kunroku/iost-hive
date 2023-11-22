@@ -51,4 +51,4 @@ export type IWalletExtension = {
 };
 
 export const getIwalletJS = () =>
-  window['IWalletJS'] as IWalletExtension | undefined;
+  window && (window['IWalletJS'] as IWalletExtension | undefined);

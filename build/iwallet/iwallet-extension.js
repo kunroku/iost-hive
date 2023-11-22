@@ -28,6 +28,6 @@ class AbstractIOSTAdapter {
     }
 }
 exports.AbstractIOSTAdapter = AbstractIOSTAdapter;
-const getIwalletJS = () => window['IWalletJS'];
+const getIwalletJS = () => window && window['IWalletJS'];
 exports.getIwalletJS = getIwalletJS;
 //# sourceMappingURL=iwallet-extension.js.map

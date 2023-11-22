@@ -11,15 +11,13 @@ const _password2key = (password: string) => {
 
 export class Wallet {
   readonly #accounts: Account[] = [];
-  #password: string;
   get accounts() {
     return this.#accounts.map((acc) => acc.name);
   }
-  constructor(accounts: Account[], password: string) {
+  constructor(accounts: Account[]) {
     for (const account of accounts) {
       this.addAccount(account);
     }
-    this.#password = password;
   }
   sign(id: string, permission: KeyPairPermission, data: Buffer) {
     const account = this.#accounts.find((e) => e.name === id);
@@ -49,9 +47,6 @@ export class Wallet {
     }
     this.#accounts.splice(index, 1);
   }
-  updatePassword(password: string) {
-    this.#password = password;
-  }
   verify(
     id: string,
     permission: KeyPairPermission,
@@ -65,9 +60,9 @@ export class Wallet {
     const account = this.#accounts[index];
     return account.verify(permission, data, signature);
   }
-  toString(): string {
+  toString(password = ''): string {
     const nonce = randomBytes(secretbox.nonceLength);
-    const key = _password2key(this.#password);
+    const key = _password2key(password);
     const accounts = this.#accounts.map((acc) => acc.toString());
     const str = JSON.stringify(accounts);
     const box = secretbox(Buffer.from(str, 'utf-8'), nonce, key);
@@ -75,7 +70,7 @@ export class Wallet {
     const boxBs58 = Bs58.encode(Buffer.from(box));
     return `${nonceBs58}:${boxBs58}`;
   }
-  static parse(data: string, password: string) {
+  static parse(data: string, password = '') {
     const [nonce, encrypted] = data.split(':');
     const nonceBuffer = Bs58.decode(nonce);
     const encryptedBuffer = Bs58.decode(encrypted);
@@ -86,7 +81,6 @@ export class Wallet {
     const accounts = JSON.parse(decrypted.toString('utf-8')) as string[];
     const wallet = new Wallet(
       accounts.map((account) => Account.parse(account)),
-      password,
     );
     return wallet;
   }
