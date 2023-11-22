@@ -59,7 +59,9 @@ class IOST {
     async setServerTimeDiff() {
         const requestStartTime = new Date().getTime() * 1e6;
         const nodeInfo = await this.rpc.getNodeInfo();
-        __classPrivateFieldSet(this, _IOST_serverTimeDiff, Number(nodeInfo.server_time) - requestStartTime, "f");
+        const serverTime = Number(nodeInfo.server_time);
+        const timeBuffer = 5 * 1e9;
+        __classPrivateFieldSet(this, _IOST_serverTimeDiff, timeBuffer + serverTime - requestStartTime, "f");
         return this.serverTimeDiff;
     }
     async sign(wallet, tx, publisher, signers) {

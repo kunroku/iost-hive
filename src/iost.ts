@@ -49,7 +49,9 @@ export class IOST {
   async setServerTimeDiff() {
     const requestStartTime = new Date().getTime() * 1e6;
     const nodeInfo = await this.rpc.getNodeInfo();
-    this.#serverTimeDiff = Number(nodeInfo.server_time) - requestStartTime;
+    const serverTime = Number(nodeInfo.server_time);
+    const timeBuffer = 5 * 1e9;
+    this.#serverTimeDiff = timeBuffer + serverTime - requestStartTime;
     return this.serverTimeDiff;
   }
   async sign(
