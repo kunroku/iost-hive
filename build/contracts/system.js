@@ -10,9 +10,11 @@ class SystemContract extends contract_interface_1.ContractInterface {
         const data = { code: source, info: abi };
         this.call('setCode', [JSON.stringify(data)]);
     }
-    updateCode(source, abi, contractId) {
-        const data = { ID: contractId, code: source, info: abi };
-        this.call('updateCode', [JSON.stringify(data)]);
+    updateCode(source, abi, contractId, data) {
+        this.call('updateCode', [
+            JSON.stringify({ ID: contractId, code: source, info: abi }),
+            data,
+        ]);
     }
     cancelDelaytx(hash) {
         this.call('cancelDelaytx', [hash]);
