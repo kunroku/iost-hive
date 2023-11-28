@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
 const fileName = 'iost';
-// const libName = 'IOST';
+const libName = 'IOST';
 const entry = './src/index.ts';
 
 const webConfig = {
@@ -19,7 +19,7 @@ const webConfig = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: `${fileName}.min.js`,
-    // library: `${libName}`,
+    library: `${libName}`,
     libraryTarget: 'umd',
     umdNamedDefine: true,
     globalObject: "typeof self !== 'undefined' ? self : this",
