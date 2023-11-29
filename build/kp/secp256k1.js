@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Secp256k1 = void 0;
-const buffer_1 = require("../utils/buffer");
+const buffer_1 = require("buffer");
 const bn_js_1 = require("bn.js");
 const elliptic_1 = require("elliptic");
 const crypto_1 = require("../crypto");

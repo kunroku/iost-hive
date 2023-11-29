@@ -13,7 +13,7 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
 var _Signature_name, _Signature_type, _Signature_pubkey, _Signature_sig;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Signature = void 0;
-const buffer_1 = require("../utils/buffer");
+const buffer_1 = require("buffer");
 const codec_1 = require("./codec");
 class Signature {
     get name() {

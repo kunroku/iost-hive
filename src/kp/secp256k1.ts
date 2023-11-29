@@ -1,4 +1,4 @@
-import { Buffer } from '../utils/buffer';
+import { Buffer } from 'buffer';
 import BN from 'bn.js';
 import { ec as EC } from 'elliptic';
 import { Signature } from '../crypto';

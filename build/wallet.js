@@ -7,12 +7,13 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var _Wallet_accounts;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Wallet = void 0;
-const account_1 = require("./account");
 const tweetnacl_1 = require("tweetnacl");
+const buffer_1 = require("buffer");
+const account_1 = require("./account");
 const bs58_1 = require("./utils/bs58");
 const utils_1 = require("./utils");
 const _password2key = (password) => {
-    const key = (0, utils_1.sha3)(256, utils_1.Buffer.from(password));
+    const key = (0, utils_1.sha3)(256, buffer_1.Buffer.from(password));
     return key;
 };
 class Wallet {
@@ -66,9 +67,9 @@ class Wallet {
         const key = _password2key(password);
         const accounts = __classPrivateFieldGet(this, _Wallet_accounts, "f").map((acc) => acc.toString());
         const str = JSON.stringify(accounts);
-        const box = (0, tweetnacl_1.secretbox)(utils_1.Buffer.from(str, 'utf-8'), nonce, key);
-        const nonceBs58 = bs58_1.Bs58.encode(utils_1.Buffer.from(nonce));
-        const boxBs58 = bs58_1.Bs58.encode(utils_1.Buffer.from(box));
+        const box = (0, tweetnacl_1.secretbox)(buffer_1.Buffer.from(str, 'utf-8'), nonce, key);
+        const nonceBs58 = bs58_1.Bs58.encode(buffer_1.Buffer.from(nonce));
+        const boxBs58 = bs58_1.Bs58.encode(buffer_1.Buffer.from(box));
         return `${nonceBs58}:${boxBs58}`;
     }
     static parse(data, password = '') {
@@ -76,7 +77,7 @@ class Wallet {
         const nonceBuffer = bs58_1.Bs58.decode(nonce);
         const encryptedBuffer = bs58_1.Bs58.decode(encrypted);
         const key = _password2key(password);
-        const decrypted = utils_1.Buffer.from(tweetnacl_1.secretbox.open(encryptedBuffer, nonceBuffer, key));
+        const decrypted = buffer_1.Buffer.from(tweetnacl_1.secretbox.open(encryptedBuffer, nonceBuffer, key));
         const accounts = JSON.parse(decrypted.toString('utf-8'));
         const wallet = new Wallet(accounts.map((account) => account_1.Account.parse(account)));
         return wallet;
