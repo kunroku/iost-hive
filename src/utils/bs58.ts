@@ -1,5 +1,5 @@
 import * as bs58 from 'bs58';
-import { Buffer } from 'buffer';
+import { Buffer } from './buffer';
 
 export class Bs58 {
   static encode(buf: Buffer) {

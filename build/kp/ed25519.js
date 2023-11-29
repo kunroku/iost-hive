@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Ed25519 = void 0;
-const buffer_1 = require("buffer");
 const tweetnacl_1 = require("tweetnacl");
+const buffer_1 = require("../utils/buffer");
 const crypto_1 = require("../crypto");
 const abstract_kp_1 = require("./abstract-kp");
 class Ed25519 extends abstract_kp_1.AbstractKeyPair {

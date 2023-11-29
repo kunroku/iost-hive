@@ -1,5 +1,4 @@
 /// <reference types="node" />
-import { Buffer } from 'buffer';
 import { Signature } from '../crypto';
 import { AbstractKeyPair } from './abstract-kp';
 export declare class Secp256k1 extends AbstractKeyPair {

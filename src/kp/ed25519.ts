@@ -1,5 +1,5 @@
-import { Buffer } from 'buffer';
 import { sign } from 'tweetnacl';
+import { Buffer } from '../utils/buffer';
 import { Signature } from '../crypto';
 import { AbstractKeyPair, KeyPairAlgorithm } from './abstract-kp';
 

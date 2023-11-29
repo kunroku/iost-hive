@@ -1,4 +1,4 @@
-import { Buffer } from 'buffer';
+import { Buffer } from '../utils/buffer';
 import { Codec } from './codec';
 
 export type SignatureStruct = {
