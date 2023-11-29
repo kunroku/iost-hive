@@ -2,7 +2,7 @@ import { Account } from './account';
 import { secretbox, randomBytes } from 'tweetnacl';
 import { Bs58 } from './utils/bs58';
 import { KeyPairPermission } from './data/params';
-import { sha3 } from './utils';
+import { sha3, Buffer } from './utils';
 
 const _password2key = (password: string) => {
   const key = sha3(256, Buffer.from(password));
