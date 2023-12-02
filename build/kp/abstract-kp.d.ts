@@ -9,12 +9,12 @@ export type KeyPairJSON = {
     pubkey: string;
     seckey: string | null;
 };
-export declare abstract class AbstractKeyPair {
+export declare abstract class AbstractKeyPair implements KeyPairJSON {
     #private;
     get type(): KeyPairAlgorithm;
     get name(): string;
-    get pubkey(): Buffer;
-    get seckey(): Buffer;
+    get pubkey(): string;
+    get seckey(): string;
     constructor(type: number, pubkey: Buffer, seckey: Buffer | null);
     abstract sign(data: Buffer): Signature;
     abstract verify(data: Buffer, signature: Buffer): boolean;

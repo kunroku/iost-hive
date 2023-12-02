@@ -8,7 +8,8 @@ export type TransactionArgumentType =
   | string
   | boolean
   | { [key: string]: TransactionArgumentType | Array<TransactionArgumentType> };
-export type IOSTConfig = {
+export type NetworkConfig = {
+  name: string;
   host: string;
   chainId: number;
 };

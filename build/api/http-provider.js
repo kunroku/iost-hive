@@ -2,13 +2,15 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.HTTPProvider = void 0;
 const axios_1 = require("axios");
-const iwallet_adapter_1 = require("../iwallet/iwallet-adapter");
-class HTTPProvider extends iwallet_adapter_1.HTTPProviderAdapter {
+class HTTPProvider {
+    constructor(host) {
+        this.host = host;
+    }
     async get(url) {
         try {
             const res = await (0, axios_1.default)({
                 method: 'get',
-                baseURL: this._host,
+                baseURL: this.host,
                 url,
                 headers: {
                     'Content-Type': 'text/plain',
@@ -29,7 +31,7 @@ class HTTPProvider extends iwallet_adapter_1.HTTPProviderAdapter {
         try {
             const res = await (0, axios_1.default)({
                 method: 'post',
-                baseURL: this._host,
+                baseURL: this.host,
                 url,
                 data,
                 headers: {
@@ -51,7 +53,7 @@ class HTTPProvider extends iwallet_adapter_1.HTTPProviderAdapter {
         try {
             const res = await (0, axios_1.default)({
                 method: 'post',
-                baseURL: this._host,
+                baseURL: this.host,
                 url,
                 data,
                 headers: {

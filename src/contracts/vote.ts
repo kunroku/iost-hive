@@ -14,36 +14,36 @@ export class VoteContract extends ContractInterface {
     return 'vote.iost';
   }
   newVote(owner: string, description: string, info: VoteInfo) {
-    this.call('newVote', [owner, description, info]);
+    this._call('newVote', [owner, description, info]);
   }
   setCanVote(voteId: string, canVote: boolean) {
-    this.call('setCanVote', [voteId, canVote]);
+    this._call('setCanVote', [voteId, canVote]);
   }
   setFreezeTime(voteId: string, freezeTime: number) {
-    this.call('setFreezeTime', [voteId, freezeTime]);
+    this._call('setFreezeTime', [voteId, freezeTime]);
   }
   addOption(voteId: string, option: string, clearVote: boolean) {
-    this.call('addOption', [voteId, option, clearVote]);
+    this._call('addOption', [voteId, option, clearVote]);
   }
   removeOption(voteId: string, option: string, force: boolean) {
-    this.call('removeOption', [voteId, option, force]);
+    this._call('removeOption', [voteId, option, force]);
   }
   getOption(voteId: string, option: string) {
-    this.call('getOption', [voteId, option]);
+    this._call('getOption', [voteId, option]);
   }
   vote(voteId: string, account: string, option: string, amount: string) {
-    this.call('vote', [voteId, account, option, amount]);
+    this._call('vote', [voteId, account, option, amount]);
   }
   unvote(voteId: string, account: string, option: string, amount: string) {
-    this.call('unvote', [voteId, account, option, amount]);
+    this._call('unvote', [voteId, account, option, amount]);
   }
   getVote(voteId: string, account: string) {
-    this.call('getVote', [voteId, account]);
+    this._call('getVote', [voteId, account]);
   }
   getResult(voteId: string) {
-    this.call('voteId', [voteId]);
+    this._call('voteId', [voteId]);
   }
   delVote(voteId: string) {
-    this.call('delVote', [voteId]);
+    this._call('delVote', [voteId]);
   }
 }

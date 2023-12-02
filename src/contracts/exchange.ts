@@ -5,7 +5,7 @@ export class ExchangeContract extends ContractInterface {
     return 'exchange.iost';
   }
   transfer(symbol: string, to: string, amount: string, memo: string) {
-    this.call('transfer', [symbol, to, amount, memo]);
+    this._call('transfer', [symbol, to, amount, memo]);
   }
   createAccountAndTransfer(
     id: string,

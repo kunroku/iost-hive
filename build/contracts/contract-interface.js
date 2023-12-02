@@ -13,13 +13,17 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var _ContractInterface_tx;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ContractInterface = void 0;
+const contract_storage_1 = require("./contract-storage");
 class ContractInterface {
     constructor(tx) {
         _ContractInterface_tx.set(this, void 0);
         __classPrivateFieldSet(this, _ContractInterface_tx, tx, "f");
     }
-    call(abi, args) {
+    _call(abi, args) {
         __classPrivateFieldGet(this, _ContractInterface_tx, "f").addAction(this.id, abi, args);
+    }
+    _storage(rpc) {
+        return new contract_storage_1.ContractStorage(this.id, rpc);
     }
 }
 exports.ContractInterface = ContractInterface;

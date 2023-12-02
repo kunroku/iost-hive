@@ -1,39 +1,26 @@
 "use strict";
-var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
-    if (kind === "m") throw new TypeError("Private method is not writable");
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
-    return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
-};
-var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
-    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
-};
-var _Account_auth;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Account = void 0;
 const kp_1 = require("./kp");
 const bs58_1 = require("./utils/bs58");
-const iwallet_adapter_1 = require("./iwallet/iwallet-adapter");
-class Account extends iwallet_adapter_1.AccountAdapter {
+const api_1 = require("./api");
+class Account {
     constructor(name) {
-        super(name);
-        _Account_auth.set(this, void 0);
-        __classPrivateFieldSet(this, _Account_auth, {
+        this.name = name;
+        this.auth = {
             active: [],
             owner: [],
-        }, "f");
+        };
     }
     addKeyPair(permission, keyPair) {
-        __classPrivateFieldGet(this, _Account_auth, "f")[permission].push(keyPair);
+        this.auth[permission].push(keyPair);
         return this;
     }
     sign(permission, data) {
-        return __classPrivateFieldGet(this, _Account_auth, "f")[permission].map((kp) => kp.sign(data));
+        return this.auth[permission].map((kp) => kp.sign(data));
     }
     verify(permission, data, signature) {
-        for (const kp of __classPrivateFieldGet(this, _Account_auth, "f")[permission]) {
+        for (const kp of this.auth[permission]) {
             const isSignatureValid = kp.verify(data, signature);
             if (isSignatureValid) {
                 return true;
@@ -46,16 +33,49 @@ class Account extends iwallet_adapter_1.AccountAdapter {
             name: this.name,
             auth: { active: [], owner: [] },
         };
-        for (const keyPair of __classPrivateFieldGet(this, _Account_auth, "f").active) {
+        for (const keyPair of this.auth.active) {
             json.auth.active.push(keyPair.toJSON());
         }
-        for (const keyPair of __classPrivateFieldGet(this, _Account_auth, "f").owner) {
+        for (const keyPair of this.auth.owner) {
             json.auth.owner.push(keyPair.toJSON());
         }
         return json;
     }
     toString() {
         return JSON.stringify(this.toJSON());
+    }
+    async authorize(network) {
+        const rpc = new api_1.RPC(new api_1.HTTPProvider(network.host));
+        const info = await rpc.getAccount(this.name);
+        const res = {
+            active: { weight: 0, threshold: 0, available: false },
+            owner: { weight: 0, threshold: 0, available: false },
+        };
+        for (const kp of this.auth.active) {
+            const pubkey = kp.pubkey;
+            for (const permission of info.permissions.active.items) {
+                if (permission.id === pubkey) {
+                    res.active.weight += Number(permission.weight);
+                }
+            }
+            res.active.threshold = Number(info.permissions.active.threshold);
+        }
+        if (res.active.threshold <= res.active.weight) {
+            res.active.available = true;
+        }
+        for (const kp of this.auth.owner) {
+            const pubkey = kp.pubkey;
+            for (const permission of info.permissions.owner.items) {
+                if (permission.id === pubkey) {
+                    res.owner.weight += Number(permission.weight);
+                }
+            }
+            res.owner.threshold = Number(info.permissions.owner.threshold);
+        }
+        if (res.owner.threshold <= res.owner.weight) {
+            res.owner.available = true;
+        }
+        return res;
     }
     static parse(data) {
         const { name, auth } = JSON.parse(data);
@@ -70,5 +90,4 @@ class Account extends iwallet_adapter_1.AccountAdapter {
     }
 }
 exports.Account = Account;
-_Account_auth = new WeakMap();
 //# sourceMappingURL=account.js.map

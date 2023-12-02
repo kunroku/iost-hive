@@ -11,7 +11,7 @@ export type KeyPairJSON = {
   seckey: string | null;
 };
 
-export abstract class AbstractKeyPair {
+export abstract class AbstractKeyPair implements KeyPairJSON {
   readonly #type: KeyPairAlgorithm;
   readonly #name: string;
   readonly #pubkey: string;
@@ -23,10 +23,10 @@ export abstract class AbstractKeyPair {
     return this.#name;
   }
   get pubkey() {
-    return Bs58.decode(this.#pubkey);
+    return this.#pubkey;
   }
   get seckey() {
-    return this.#seckey ? Bs58.decode(this.#seckey) : null;
+    return this.#seckey;
   }
   constructor(type: number, pubkey: Buffer, seckey: Buffer | null) {
     this.#type = type;

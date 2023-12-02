@@ -7,70 +7,70 @@ class VoteProducerContract extends contract_interface_1.ContractInterface {
         return 'vote_producer.iost';
     }
     initProducer(proID, proPubkey) {
-        this.call('initProducer', [proID, proPubkey]);
+        this._call('initProducer', [proID, proPubkey]);
     }
     initAdmin(adminID) {
-        this.call('initAdmin', [adminID]);
+        this._call('initAdmin', [adminID]);
     }
     applyRegister(account, pubkey, loc, url, netId, isProducer) {
-        this.call('applyRegister', [account, pubkey, loc, url, netId, isProducer]);
+        this._call('applyRegister', [account, pubkey, loc, url, netId, isProducer]);
     }
     applyUnregister(account) {
-        this.call('applyUnregister', [account]);
+        this._call('applyUnregister', [account]);
     }
     approveRegister(account) {
-        this.call('approveRegister', [account]);
+        this._call('approveRegister', [account]);
     }
     approveUnregister(account) {
-        this.call('approveUnregister', [account]);
+        this._call('approveUnregister', [account]);
     }
     forceUnregister(account) {
-        this.call('forceUnregister', [account]);
+        this._call('forceUnregister', [account]);
     }
     unregister(account) {
-        this.call('unregister', [account]);
+        this._call('unregister', [account]);
     }
     updateProducer(account, pubkey, loc, url, netId) {
-        this.call('updateProducer', [account, pubkey, loc, url, netId]);
+        this._call('updateProducer', [account, pubkey, loc, url, netId]);
     }
     getProducer(account) {
-        this.call('getProducer', [account]);
+        this._call('getProducer', [account]);
     }
     logInProducer(account) {
-        this.call('logInProducer', [account]);
+        this._call('logInProducer', [account]);
     }
     logOutProducer(account) {
-        this.call('logOutProducer', [account]);
+        this._call('logOutProducer', [account]);
     }
     vote(voter, producer, amount) {
-        this.call('vote', [voter, producer, amount]);
+        this._call('vote', [voter, producer, amount]);
     }
     unvote(voter, producer, amount) {
-        this.call('unvote', [voter, producer, amount]);
+        this._call('unvote', [voter, producer, amount]);
     }
     getVote(voter) {
-        this.call('getVote', [voter]);
+        this._call('getVote', [voter]);
     }
     topupVoterBonus(account, amount, payer) {
-        this.call('topupVoterBonus', [account, amount, payer]);
+        this._call('topupVoterBonus', [account, amount, payer]);
     }
     topupCandidateBonus(amount, payer) {
-        this.call('topupCandidateBonus', [amount, payer]);
+        this._call('topupCandidateBonus', [amount, payer]);
     }
     getVoterBonus(voter) {
-        this.call('getVoterBonus', [voter]);
+        this._call('getVoterBonus', [voter]);
     }
     voterWithdraw(voter) {
-        this.call('voterWithdraw', [voter]);
+        this._call('voterWithdraw', [voter]);
     }
     getCandidateBonus(account) {
-        this.call('getCandidateBonus', [account]);
+        this._call('getCandidateBonus', [account]);
     }
     candidateWithdraw(account) {
-        this.call('candidateWithdraw', [account]);
+        this._call('candidateWithdraw', [account]);
     }
     stat() {
-        this.call('stat', []);
+        this._call('stat', []);
     }
 }
 exports.VoteProducerContract = VoteProducerContract;

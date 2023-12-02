@@ -1,5 +1,5 @@
 {
-  "name": "@iost/client",
+  "name": "@iost/hive",
   "version": "0.0.1",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -35,7 +35,6 @@
     "elliptic": "^6.5.4",
     "esprima": "^4.0.1",
     "events": "^3.3.0",
-    "js-sha3": "^0.9.2",
     "long": "^5.2.1",
     "sha3": "^2.1.4",
     "strict-event-emitter-types": "^2.0.0",

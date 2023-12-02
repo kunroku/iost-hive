@@ -6,6 +6,7 @@ const bn_js_1 = require("bn.js");
 const elliptic_1 = require("elliptic");
 const crypto_1 = require("../crypto");
 const abstract_kp_1 = require("./abstract-kp");
+const utils_1 = require("../utils");
 const secp = new elliptic_1.ec('secp256k1');
 class Secp256k1 extends abstract_kp_1.AbstractKeyPair {
     constructor(pubkey, seckey) {
@@ -24,12 +25,12 @@ class Secp256k1 extends abstract_kp_1.AbstractKeyPair {
             buffer_1.Buffer.from(r.toArray()),
             buffer_1.Buffer.from(s.toArray()),
         ]);
-        return new crypto_1.Signature(this.type, this.name, this.pubkey, buffer);
+        return new crypto_1.Signature(this.type, this.name, utils_1.Bs58.decode(this.pubkey), buffer);
     }
     verify(data, signature) {
         const r = new bn_js_1.default(signature.slice(0, 32).toString('hex'), 16);
         const s = new bn_js_1.default(signature.slice(32, 64).toString('hex'), 16);
-        return secp.verify(data, { r, s }, this.pubkey);
+        return secp.verify(data, { r, s }, utils_1.Bs58.decode(this.pubkey));
     }
     static fromPublicKey(pubkey) {
         return new Secp256k1(pubkey, null);

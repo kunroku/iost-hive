@@ -3,6 +3,7 @@ import BN from 'bn.js';
 import { ec as EC } from 'elliptic';
 import { Signature } from '../crypto';
 import { AbstractKeyPair, KeyPairAlgorithm } from './abstract-kp';
+import { Bs58 } from '../utils';
 
 const secp = new EC('secp256k1');
 
@@ -26,12 +27,17 @@ export class Secp256k1 extends AbstractKeyPair {
       Buffer.from(r.toArray()),
       Buffer.from(s.toArray()),
     ]);
-    return new Signature(this.type, this.name, this.pubkey, buffer);
+    return new Signature(
+      this.type,
+      this.name,
+      Bs58.decode(this.pubkey),
+      buffer,
+    );
   }
   verify(data: Buffer, signature: Buffer) {
     const r = new BN(signature.slice(0, 32).toString('hex'), 16);
     const s = new BN(signature.slice(32, 64).toString('hex'), 16);
-    return secp.verify(data, { r, s }, this.pubkey);
+    return secp.verify(data, { r, s }, Bs58.decode(this.pubkey));
   }
   static fromPublicKey(pubkey: Buffer) {
     return new Secp256k1(pubkey, null);

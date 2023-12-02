@@ -5,16 +5,17 @@ const tweetnacl_1 = require("tweetnacl");
 const buffer_1 = require("buffer");
 const crypto_1 = require("../crypto");
 const abstract_kp_1 = require("./abstract-kp");
+const utils_1 = require("../utils");
 class Ed25519 extends abstract_kp_1.AbstractKeyPair {
     constructor(pubkey, seckey) {
         super(abstract_kp_1.KeyPairAlgorithm.ED25519, pubkey, seckey);
     }
     sign(data) {
-        const buffer = buffer_1.Buffer.from(tweetnacl_1.sign.detached(data, this.seckey));
-        return new crypto_1.Signature(this.type, this.name, this.pubkey, buffer);
+        const buffer = buffer_1.Buffer.from(tweetnacl_1.sign.detached(data, utils_1.Bs58.decode(this.seckey)));
+        return new crypto_1.Signature(this.type, this.name, utils_1.Bs58.decode(this.pubkey), buffer);
     }
     verify(data, signature) {
-        return tweetnacl_1.sign.detached.verify(data, signature, this.pubkey);
+        return tweetnacl_1.sign.detached.verify(data, signature, utils_1.Bs58.decode(this.pubkey));
     }
     static fromPublicKey(pubkey) {
         return new Ed25519(pubkey, null);

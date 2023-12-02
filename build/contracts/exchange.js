@@ -7,7 +7,7 @@ class ExchangeContract extends contract_interface_1.ContractInterface {
         return 'exchange.iost';
     }
     transfer(symbol, to, amount, memo) {
-        this.call('transfer', [symbol, to, amount, memo]);
+        this._call('transfer', [symbol, to, amount, memo]);
     }
     createAccountAndTransfer(id, amount, ownerKey, activeKey) {
         this.transfer('iost', '', amount, `create:${id}:${ownerKey}:${activeKey}`);

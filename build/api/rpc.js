@@ -9,58 +9,57 @@ var __asyncValues = (this && this.__asyncValues) || function (o) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RPC = void 0;
 const events_1 = require("events");
-const iwallet_adapter_1 = require("../iwallet/iwallet-adapter");
-class RPC extends iwallet_adapter_1.RPCAdapter {
+class RPC {
     constructor(provider) {
-        super(provider);
+        this.provider = provider;
     }
     async getNodeInfo() {
         const url = 'getNodeInfo';
-        return await this._provider.get(url);
+        return await this.provider.get(url);
     }
     async getChainInfo() {
         const url = 'getChainInfo';
-        return await this._provider.get(url);
+        return await this.provider.get(url);
     }
     async getGasRatio() {
         const url = 'getGasRatio';
-        return await this._provider.get(url);
+        return await this.provider.get(url);
     }
     async getRAMInfo() {
         const url = 'getRAMInfo';
-        return await this._provider.get(url);
+        return await this.provider.get(url);
     }
     async getTxByHash(hash) {
         const url = `getTxByHash/${hash}`;
-        return await this._provider.get(url);
+        return await this.provider.get(url);
     }
     async getTxReceiptByTxHash(hash) {
         const url = `getTxReceiptByTxHash/${hash}`;
-        return await this._provider.get(url);
+        return await this.provider.get(url);
     }
     async getBlockByHash(hash) {
         const url = `getBlockByHash/${hash}/true`;
-        return await this._provider.get(url);
+        return await this.provider.get(url);
     }
     async getBlockByNumber(num) {
         const url = `getBlockByNumber/${num}/true`;
-        return await this._provider.get(url);
+        return await this.provider.get(url);
     }
     async getAccount(id, byLongestChain = true) {
         const url = `getAccount/${id}/${byLongestChain}`;
-        return await this._provider.get(url);
+        return await this.provider.get(url);
     }
     async getBalance(address, symbol = 'iost', byLongestChain = true) {
         const url = `getTokenBalance/${address}/${symbol}/${byLongestChain}`;
-        return await this._provider.get(url);
+        return await this.provider.get(url);
     }
     async getProducerVoteInfo(id, byLongestChain = true) {
         const url = `getProducerVoteInfo/${id}/${byLongestChain}`;
-        return await this._provider.get(url);
+        return await this.provider.get(url);
     }
     async getContract(id, byLongestChain = true) {
         const url = `getContract/${id}/${byLongestChain}`;
-        return await this._provider.get(url);
+        return await this.provider.get(url);
     }
     async getContractStorage(id, key, field, byLongestChain = true) {
         const url = 'getContractStorage';
@@ -70,7 +69,7 @@ class RPC extends iwallet_adapter_1.RPCAdapter {
             field: field || '',
             by_longest_chain: byLongestChain,
         };
-        return await this._provider.post(url, data);
+        return await this.provider.post(url, data);
     }
     async getContractStorageFields(id, key, byLongestChain = true) {
         const url = 'getContractStorageFields';
@@ -79,7 +78,7 @@ class RPC extends iwallet_adapter_1.RPCAdapter {
             key,
             by_longest_chain: byLongestChain,
         };
-        return await this._provider.post(url, data);
+        return await this.provider.post(url, data);
     }
     async getBatchContractStorage(id, keyFields, byLongestChain = true) {
         const chunkedQuery = [];
@@ -94,16 +93,16 @@ class RPC extends iwallet_adapter_1.RPCAdapter {
             chunkedQuery[chunkedQuery.length - 1].key_fields.push(keyFields[i]);
         }
         const url = 'getBatchContractStorage';
-        const res = await Promise.all(chunkedQuery.map((query) => this._provider.post(url, query)));
+        const res = await Promise.all(chunkedQuery.map((query) => this.provider.post(url, query)));
         return res;
     }
     async sendTx(tx) {
         const url = 'sendTx';
-        return await this._provider.post(url, tx.toString());
+        return await this.provider.post(url, tx.toString());
     }
     async execTx(tx) {
         const url = 'execTx';
-        return await this._provider.post(url, tx.toString());
+        return await this.provider.post(url, tx.toString());
     }
     subscribe(topics, contract) {
         const url = 'subscribe';
@@ -112,7 +111,7 @@ class RPC extends iwallet_adapter_1.RPCAdapter {
             filter: { contract_id: contract },
         };
         const event = new events_1.EventEmitter();
-        this._provider.stream(url, data).then(async (readable) => {
+        this.provider.stream(url, data).then(async (readable) => {
             var _a, e_1, _b, _c;
             try {
                 for (var _d = true, readable_1 = __asyncValues(readable), readable_1_1; readable_1_1 = await readable_1.next(), _a = readable_1_1.done, !_a;) {
@@ -144,31 +143,31 @@ class RPC extends iwallet_adapter_1.RPCAdapter {
     }
     async getCandidateBonus(name, byLongestChain = true) {
         const url = `getCandidateBonus/${name}/${byLongestChain}`;
-        return await this._provider.get(url);
+        return await this.provider.get(url);
     }
     async getVoterBonus(name, byLongestChain = true) {
         const url = `getVoterBonus/${name}/${byLongestChain}`;
-        return await this._provider.get(url);
+        return await this.provider.get(url);
     }
     async getTokenInfo(symbol, byLongestChain = true) {
         const url = `getTokenInfo/${symbol}/${byLongestChain}`;
-        return await this._provider.get(url);
+        return await this.provider.get(url);
     }
     async getToken721Balance(address, symbol, byLongestChain = true) {
         const url = `getToken721Balance/${address}/${symbol}/${byLongestChain}`;
-        return await this._provider.get(url);
+        return await this.provider.get(url);
     }
     async getToken721Metadata(symbol, tokenID, byLongestChain = true) {
         const url = `getToken721Metadata/${symbol}/${tokenID}/${byLongestChain}`;
-        return await this._provider.get(url);
+        return await this.provider.get(url);
     }
     async getToken721Owner(symbol, tokenID, byLongestChain = true) {
         const url = `getToken721Owner/${symbol}/${tokenID}/${byLongestChain}`;
-        return await this._provider.get(url);
+        return await this.provider.get(url);
     }
     async listContractStorage(contract, limit = 100, byLongestChain = true) {
         const url = `listContractStorage`;
-        return await this._provider.post(url, {
+        return await this.provider.post(url, {
             id: contract,
             limit,
             by_longest_cahin: byLongestChain,
@@ -176,7 +175,7 @@ class RPC extends iwallet_adapter_1.RPCAdapter {
     }
     async listContractStorageMap(contract, limit = 100, byLongestChain = true) {
         const url = `listContractStorage`;
-        return await this._provider.post(url, {
+        return await this.provider.post(url, {
             id: contract,
             limit,
             storageType: 'MAP',
@@ -185,7 +184,7 @@ class RPC extends iwallet_adapter_1.RPCAdapter {
     }
     async listContractStorageMapByPrefix(contract, prefix, limit = 100, byLongestChain = true) {
         const url = `listContractStorage`;
-        return await this._provider.post(url, {
+        return await this.provider.post(url, {
             id: contract,
             limit,
             prefix,
@@ -195,7 +194,7 @@ class RPC extends iwallet_adapter_1.RPCAdapter {
     }
     async listContractStorageMapByRange(contract, range, limit = 100, byLongestChain = true) {
         const url = `listContractStorage`;
-        return await this._provider.post(url, {
+        return await this.provider.post(url, {
             id: contract,
             limit,
             from: range.from,

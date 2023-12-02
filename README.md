@@ -3,13 +3,13 @@
 ## import
 
 ```js
-import { IOST } from '@iost/client';
+import { IOST } from '@iost/hive';
 ```
 
 or
 
 ```js
-const { IOST } = require('@iost/client');
+const { IOST } = require('@iost/hive');
 ```
 
 ## iost
@@ -18,6 +18,7 @@ const { IOST } = require('@iost/client');
 
 ```js
 const config = {
+  "name": "Local",
   "host": "http://localhost:30001",
   "chainId": 1020
 };
@@ -29,7 +30,7 @@ const iost = new IOST(config);
 ### create wallet instance with local admin account
 
 ```js
-import { Wallet, Account, Ed25519, Bs58 } from '@iost/client';
+import { Wallet, Account, Ed25519, Bs58 } from '@iost/hive';
 
 const seckey = '2yquS3ySrGWPEKywCPzX4RTJugqRh7kJSo5aehsLYPEWkUxBWA39oMrZ7ZxuM4fgyXYs2cPwh5n8aNNpH5x2VyK1';
 

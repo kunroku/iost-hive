@@ -5,10 +5,10 @@ export class Token721Contract extends ContractInterface {
     return 'token721.iost';
   }
   create(symbol: string, issuer: string, totalSupply: number) {
-    this.call('create', [symbol, issuer, totalSupply]);
+    this._call('create', [symbol, issuer, totalSupply]);
   }
   issue(symbol: string, to: string, metadata: string) {
-    this.call('issue', [symbol, to, metadata]);
+    this._call('issue', [symbol, to, metadata]);
   }
   transfer(
     symbol: string,
@@ -17,9 +17,9 @@ export class Token721Contract extends ContractInterface {
     tokenId: string,
     memo: string,
   ) {
-    this.call('transfer', [symbol, from, to, tokenId, memo]);
+    this._call('transfer', [symbol, from, to, tokenId, memo]);
   }
   destroy(symbol: string, from: string, amount: string) {
-    this.call('destroy', [symbol, from, amount]);
+    this._call('destroy', [symbol, from, amount]);
   }
 }

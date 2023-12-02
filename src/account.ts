@@ -1,7 +1,7 @@
 import { AbstractKeyPair, KeyPair, KeyPairJSON } from './kp';
-import { KeyPairPermission } from './data/params';
+import { NetworkConfig, KeyPairPermission } from './data/params';
 import { Bs58 } from './utils/bs58';
-import { AccountAdapter } from './iwallet/iwallet-adapter';
+import { HTTPProvider, RPC } from './api';
 
 export type AccountJSON = {
   name: string;
@@ -11,27 +11,28 @@ export type AccountJSON = {
   };
 };
 
-export class Account extends AccountAdapter {
-  readonly #auth: {
+export class Account implements AccountJSON {
+  name: string;
+  auth: {
     active: AbstractKeyPair[];
     owner: AbstractKeyPair[];
   };
   constructor(name: string) {
-    super(name);
-    this.#auth = {
+    this.name = name;
+    this.auth = {
       active: [],
       owner: [],
     };
   }
   addKeyPair(permission: KeyPairPermission, keyPair: AbstractKeyPair) {
-    this.#auth[permission].push(keyPair);
+    this.auth[permission].push(keyPair);
     return this;
   }
   sign(permission: KeyPairPermission, data: Buffer) {
-    return this.#auth[permission].map((kp) => kp.sign(data));
+    return this.auth[permission].map((kp) => kp.sign(data));
   }
   verify(permission: KeyPairPermission, data: Buffer, signature: Buffer) {
-    for (const kp of this.#auth[permission]) {
+    for (const kp of this.auth[permission]) {
       const isSignatureValid = kp.verify(data, signature);
       if (isSignatureValid) {
         return true;
@@ -44,16 +45,49 @@ export class Account extends AccountAdapter {
       name: this.name,
       auth: { active: [], owner: [] },
     };
-    for (const keyPair of this.#auth.active) {
+    for (const keyPair of this.auth.active) {
       json.auth.active.push(keyPair.toJSON());
     }
-    for (const keyPair of this.#auth.owner) {
+    for (const keyPair of this.auth.owner) {
       json.auth.owner.push(keyPair.toJSON());
     }
     return json;
   }
   toString() {
     return JSON.stringify(this.toJSON());
+  }
+  async authorize(network: NetworkConfig) {
+    const rpc = new RPC(new HTTPProvider(network.host));
+    const info = await rpc.getAccount(this.name);
+    const res = {
+      active: { weight: 0, threshold: 0, available: false },
+      owner: { weight: 0, threshold: 0, available: false },
+    };
+    for (const kp of this.auth.active) {
+      const pubkey = kp.pubkey;
+      for (const permission of info.permissions.active.items) {
+        if (permission.id === pubkey) {
+          res.active.weight += Number(permission.weight);
+        }
+      }
+      res.active.threshold = Number(info.permissions.active.threshold);
+    }
+    if (res.active.threshold <= res.active.weight) {
+      res.active.available = true;
+    }
+    for (const kp of this.auth.owner) {
+      const pubkey = kp.pubkey;
+      for (const permission of info.permissions.owner.items) {
+        if (permission.id === pubkey) {
+          res.owner.weight += Number(permission.weight);
+        }
+      }
+      res.owner.threshold = Number(info.permissions.owner.threshold);
+    }
+    if (res.owner.threshold <= res.owner.weight) {
+      res.owner.available = true;
+    }
+    return res;
   }
   static parse(data: string) {
     const { name, auth } = JSON.parse(data) as AccountJSON;

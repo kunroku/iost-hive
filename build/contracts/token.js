@@ -7,19 +7,19 @@ class TokenContract extends contract_interface_1.ContractInterface {
         return 'token.iost';
     }
     create(symbol, issuer, totalSupply, config) {
-        this.call('create', [symbol, issuer, totalSupply, config]);
+        this._call('create', [symbol, issuer, totalSupply, config]);
     }
     issue(symbol, to, amount) {
-        this.call('issue', [symbol, to, amount]);
+        this._call('issue', [symbol, to, amount]);
     }
     transfer(symbol, from, to, amount, memo) {
-        this.call('transfer', [symbol, from, to, amount, memo]);
+        this._call('transfer', [symbol, from, to, amount, memo]);
     }
     transferFreeze(symbol, from, to, amount, freezeTime, memo) {
-        this.call('transferFreeze', [symbol, from, to, amount, freezeTime, memo]);
+        this._call('transferFreeze', [symbol, from, to, amount, freezeTime, memo]);
     }
     destroy(symbol, from, amount) {
-        this.call('destroy', [symbol, from, amount]);
+        this._call('destroy', [symbol, from, amount]);
     }
 }
 exports.TokenContract = TokenContract;

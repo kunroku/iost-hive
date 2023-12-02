@@ -25,5 +25,5 @@ __exportStar(require("./utils"), exports);
 __exportStar(require("./account"), exports);
 __exportStar(require("./iost"), exports);
 __exportStar(require("./wallet"), exports);
-__exportStar(require("./iwallet"), exports);
+__exportStar(require("./hive"), exports);
 //# sourceMappingURL=index.js.map

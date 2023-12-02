@@ -7,10 +7,10 @@ class BonusContract extends contract_interface_1.ContractInterface {
         return 'bonus.iost';
     }
     issueContribute(parent) {
-        this.call('issueContribute', [{ parent: [parent] }]);
+        this._call('issueContribute', [{ parent: [parent] }]);
     }
     exchangeIOST(account, amount) {
-        this.call('exchangeIOST', [account, amount]);
+        this._call('exchangeIOST', [account, amount]);
     }
 }
 exports.BonusContract = BonusContract;

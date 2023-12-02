@@ -21,7 +21,7 @@ export class KeyPair extends AbstractKeyPair {
   readonly #kp: AbstractKeyPair;
   constructor(type: KeyPairAlgorithm, pubkey: Buffer, seckey: Buffer | null) {
     const kp = createKeyPair(type, pubkey, seckey);
-    super(kp.type, kp.pubkey, kp.seckey);
+    super(kp.type, Bs58.decode(kp.pubkey), Bs58.decode(kp.seckey));
     this.#kp = kp;
   }
   sign(data: Buffer) {

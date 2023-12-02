@@ -5,12 +5,12 @@ export class RAMContract extends ContractInterface {
     return 'ram.iost';
   }
   buy(payer: string, receiver: string, amount: number) {
-    this.call('buy', [payer, receiver, amount]);
+    this._call('buy', [payer, receiver, amount]);
   }
   sell(seller: string, receiver: string, amount: number) {
-    this.call('sell', [seller, receiver, amount]);
+    this._call('sell', [seller, receiver, amount]);
   }
   lend(from: string, to: string, amount: number) {
-    this.call('lend', [from, to, amount]);
+    this._call('lend', [from, to, amount]);
   }
 }

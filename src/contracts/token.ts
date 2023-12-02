@@ -16,10 +16,10 @@ export class TokenContract extends ContractInterface {
     totalSupply: number,
     config: TokenCreateConfig,
   ) {
-    this.call('create', [symbol, issuer, totalSupply, config]);
+    this._call('create', [symbol, issuer, totalSupply, config]);
   }
   issue(symbol: string, to: string, amount: string) {
-    this.call('issue', [symbol, to, amount]);
+    this._call('issue', [symbol, to, amount]);
   }
   transfer(
     symbol: string,
@@ -28,7 +28,7 @@ export class TokenContract extends ContractInterface {
     amount: string,
     memo: string,
   ) {
-    this.call('transfer', [symbol, from, to, amount, memo]);
+    this._call('transfer', [symbol, from, to, amount, memo]);
   }
   transferFreeze(
     symbol: string,
@@ -38,9 +38,9 @@ export class TokenContract extends ContractInterface {
     freezeTime: string,
     memo: string,
   ) {
-    this.call('transferFreeze', [symbol, from, to, amount, freezeTime, memo]);
+    this._call('transferFreeze', [symbol, from, to, amount, freezeTime, memo]);
   }
   destroy(symbol: string, from: string, amount: string) {
-    this.call('destroy', [symbol, from, amount]);
+    this._call('destroy', [symbol, from, amount]);
   }
 }

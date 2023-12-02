@@ -31,7 +31,7 @@ const createKeyPair = (type, pubkey, seckey) => {
 class KeyPair extends abstract_kp_1.AbstractKeyPair {
     constructor(type, pubkey, seckey) {
         const kp = createKeyPair(type, pubkey, seckey);
-        super(kp.type, kp.pubkey, kp.seckey);
+        super(kp.type, bs58_1.Bs58.decode(kp.pubkey), bs58_1.Bs58.decode(kp.seckey));
         _KeyPair_kp.set(this, void 0);
         __classPrivateFieldSet(this, _KeyPair_kp, kp, "f");
     }

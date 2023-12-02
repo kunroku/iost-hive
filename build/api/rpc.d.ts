@@ -6,9 +6,8 @@ import { NodeInfo, ChainInfo, BlockInfo, TokenInfo, AccountInfo, RAMInfo } from 
 import { TxInfo, TxReceiptInfo } from '../data/info';
 import { Transaction } from '../transaction/transaction';
 import { RPCResponse, Params } from '../data';
-import { RPCAdapter } from '../iwallet/iwallet-adapter';
-export declare class RPC extends RPCAdapter {
-    readonly _provider: HTTPProvider;
+export declare class RPC {
+    readonly provider: HTTPProvider;
     constructor(provider: HTTPProvider);
     getNodeInfo(): Promise<NodeInfo>;
     getChainInfo(): Promise<ChainInfo>;

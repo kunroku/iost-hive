@@ -27,10 +27,10 @@ class AbstractKeyPair {
         return __classPrivateFieldGet(this, _AbstractKeyPair_name, "f");
     }
     get pubkey() {
-        return bs58_1.Bs58.decode(__classPrivateFieldGet(this, _AbstractKeyPair_pubkey, "f"));
+        return __classPrivateFieldGet(this, _AbstractKeyPair_pubkey, "f");
     }
     get seckey() {
-        return __classPrivateFieldGet(this, _AbstractKeyPair_seckey, "f") ? bs58_1.Bs58.decode(__classPrivateFieldGet(this, _AbstractKeyPair_seckey, "f")) : null;
+        return __classPrivateFieldGet(this, _AbstractKeyPair_seckey, "f");
     }
     constructor(type, pubkey, seckey) {
         _AbstractKeyPair_type.set(this, void 0);

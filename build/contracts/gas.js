@@ -7,10 +7,10 @@ class GASContract extends contract_interface_1.ContractInterface {
         return 'gas.iost';
     }
     pledge(pledgor, to, amount) {
-        this.call('pledge', [pledgor, to, amount]);
+        this._call('pledge', [pledgor, to, amount]);
     }
     unpledge(pledgor, from, amount) {
-        this.call('pledge', [pledgor, from, amount]);
+        this._call('pledge', [pledgor, from, amount]);
     }
 }
 exports.GASContract = GASContract;
