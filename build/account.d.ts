@@ -1,4 +1,5 @@
 /// <reference types="node" />
+import { Buffer } from 'buffer';
 import { AbstractKeyPair, KeyPairJSON } from './kp';
 import { NetworkConfig, KeyPairPermission } from './data/params';
 export type AccountJSON = {

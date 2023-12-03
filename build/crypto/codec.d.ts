@@ -1,4 +1,5 @@
 /// <reference types="node" />
+import { Buffer } from 'buffer';
 export declare class Codec {
     #private;
     constructor();

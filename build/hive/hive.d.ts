@@ -1,4 +1,5 @@
 /// <reference types="node" />
+import { Buffer } from 'buffer';
 import { Account } from '../account';
 import { Signature } from '../crypto';
 import { KeyPairPermission, NetworkConfig } from '../data/params';

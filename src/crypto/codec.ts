@@ -1,3 +1,4 @@
+import { Buffer } from 'buffer';
 import Long = require('long');
 
 export class Codec {

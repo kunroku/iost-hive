@@ -13,44 +13,45 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var _Codec_buffer;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Codec = void 0;
+const buffer_1 = require("buffer");
 const Long = require("long");
 class Codec {
     constructor() {
         _Codec_buffer.set(this, void 0);
-        __classPrivateFieldSet(this, _Codec_buffer, Buffer.alloc(0), "f");
+        __classPrivateFieldSet(this, _Codec_buffer, buffer_1.Buffer.alloc(0), "f");
     }
     toBuffer() {
-        return Buffer.from(__classPrivateFieldGet(this, _Codec_buffer, "f"));
+        return buffer_1.Buffer.from(__classPrivateFieldGet(this, _Codec_buffer, "f"));
     }
     pushInt(len) {
-        const bb = Buffer.alloc(4);
+        const bb = buffer_1.Buffer.alloc(4);
         bb.writeInt32BE(len, 0);
-        __classPrivateFieldSet(this, _Codec_buffer, Buffer.concat([__classPrivateFieldGet(this, _Codec_buffer, "f"), bb]), "f");
+        __classPrivateFieldSet(this, _Codec_buffer, buffer_1.Buffer.concat([__classPrivateFieldGet(this, _Codec_buffer, "f"), bb]), "f");
         return this;
     }
     pushByte(n) {
-        const bb = Buffer.alloc(1);
+        const bb = buffer_1.Buffer.alloc(1);
         bb.writeUInt8(n, 0);
-        __classPrivateFieldSet(this, _Codec_buffer, Buffer.concat([__classPrivateFieldGet(this, _Codec_buffer, "f"), bb]), "f");
+        __classPrivateFieldSet(this, _Codec_buffer, buffer_1.Buffer.concat([__classPrivateFieldGet(this, _Codec_buffer, "f"), bb]), "f");
         return this;
     }
     pushInt64(n) {
         const l = Long.fromString(n.toString());
-        const bb = Buffer.alloc(8);
+        const bb = buffer_1.Buffer.alloc(8);
         bb.writeInt32BE(l.high, 0);
         bb.writeInt32BE(l.low, 4);
-        __classPrivateFieldSet(this, _Codec_buffer, Buffer.concat([__classPrivateFieldGet(this, _Codec_buffer, "f"), bb]), "f");
+        __classPrivateFieldSet(this, _Codec_buffer, buffer_1.Buffer.concat([__classPrivateFieldGet(this, _Codec_buffer, "f"), bb]), "f");
         return this;
     }
     pushString(s) {
-        const bb = Buffer.from(s);
+        const bb = buffer_1.Buffer.from(s);
         this.pushInt(bb.length);
-        __classPrivateFieldSet(this, _Codec_buffer, Buffer.concat([__classPrivateFieldGet(this, _Codec_buffer, "f"), bb]), "f");
+        __classPrivateFieldSet(this, _Codec_buffer, buffer_1.Buffer.concat([__classPrivateFieldGet(this, _Codec_buffer, "f"), bb]), "f");
         return this;
     }
     pushBytes(b) {
         this.pushInt(b.length);
-        __classPrivateFieldSet(this, _Codec_buffer, Buffer.concat([__classPrivateFieldGet(this, _Codec_buffer, "f"), b]), "f");
+        __classPrivateFieldSet(this, _Codec_buffer, buffer_1.Buffer.concat([__classPrivateFieldGet(this, _Codec_buffer, "f"), b]), "f");
         return this;
     }
 }

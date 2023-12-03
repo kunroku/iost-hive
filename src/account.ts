@@ -1,3 +1,4 @@
+import { Buffer } from 'buffer';
 import { AbstractKeyPair, KeyPair, KeyPairJSON } from './kp';
 import { NetworkConfig, KeyPairPermission } from './data/params';
 import { Bs58 } from './utils/bs58';
