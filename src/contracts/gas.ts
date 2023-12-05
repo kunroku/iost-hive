@@ -4,10 +4,10 @@ export class GASContract extends ContractInterface {
   get id() {
     return 'gas.iost';
   }
-  pledge(pledgor: string, to: string, amount: string) {
-    this._call('pledge', [pledgor, to, amount]);
+  pledge(pledger: string, to: string, amount: string) {
+    this._call('pledge', [pledger, to, amount]);
   }
-  unpledge(pledgor: string, from: string, amount: string) {
-    this._call('pledge', [pledgor, from, amount]);
+  unpledge(pledger: string, from: string, amount: string) {
+    this._call('unpledge', [pledger, from, amount]);
   }
 }
